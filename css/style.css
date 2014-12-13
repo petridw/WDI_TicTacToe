@@ -31,6 +31,27 @@ body {
   float: left;
 }
 
-.square:hover {
+.square.playerOne:hover {
   background: #77BC31;
+}
+
+.square.playerTwo:hover {
+  background: #FC8800;
+}
+
+.square.filled.xMark {
+  background: green;
+}
+
+.square.filled.oMark {
+  background: orange;
+}
+
+.square.filled:hover {
+  background: red;
+}
+
+.resetButton {
+  display: block;
+  margin: 0 auto;
 }

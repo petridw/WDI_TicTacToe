@@ -21,10 +21,12 @@
     <!-- Game board -->
     <div class="board">
       <div class="row" ng-repeat="row in board" ng-click="">
-        <div class="square" ng-repeat="col in row.cols" ng-click="">
+        <div class="square" ng-repeat="col in row.cols" ng-click="clickSquare(col)" ng-class="{playerOne: turn, playerTwo: !turn, filled: col.filled, xMark: col.val === 'x', oMark: col.val === 'o' }">
         </div>
       </div>
     </div>
+
+    <button class="resetButton" ng-click="resetGame()">reset</button>
 
   </div>
 
