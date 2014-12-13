@@ -1,0 +1,36 @@
+body {
+  text-align: center;
+}
+
+.game {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.board {
+  margin: 0 auto;
+  padding-bottom: 5px;
+  display: inline-block;
+  background: grey;
+}
+
+.row {
+  clear: both;
+  display: block;
+}
+.row>.square:first-of-type {
+  margin-left: 5px;
+}
+
+.square {
+  height: 40px;
+  width: 40px;
+  background: white;
+  margin: 5px 5px 0 0;
+  float: left;
+}
+
+.square:hover {
+  background: #77BC31;
+}
