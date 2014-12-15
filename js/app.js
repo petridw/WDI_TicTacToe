@@ -5,7 +5,9 @@ app.controller('GameController', ['$scope', function($scope) {
   $scope.board = [];
   $scope.boardSize = 3;
   $scope.turn = true;
+  $scope.winMessage = "";
   $scope.gameInProgress = false;
+  $scope.postGame = false;
 
   //whenever boardSize changes, dynamically update the board
   $scope.$watch("boardSize", function() {
@@ -41,7 +43,6 @@ app.controller('GameController', ['$scope', function($scope) {
     }
   };
 
-
   $scope.clickSquare = function (col) {
     //start game if it hasn't been started
     if (!$scope.gameInProgress) {
@@ -58,8 +59,10 @@ app.controller('GameController', ['$scope', function($scope) {
         col.val = "o";
       }
 
-    //change turns
-    $scope.turn = !$scope.turn;
+      $scope.checkWinner();
+
+      //change turns
+      $scope.turn = !$scope.turn;
     }
 
 
@@ -72,6 +75,10 @@ app.controller('GameController', ['$scope', function($scope) {
     //during the game
     sizeSlider = document.getElementById("size-slider");
     sizeSlider.disabled = true;
+
+    $scope.gameInProgress = true;
+    $scope.winMessage = "";
+
   };
 
   $scope.resetGame = function() {
@@ -81,9 +88,49 @@ app.controller('GameController', ['$scope', function($scope) {
     sizeSlider = document.getElementById("size-slider");
     sizeSlider.disabled = false;
 
+    $scope.gameInProgress = false;
+    $scope.winMessage = "";
+    $scope.turn = true;
+    $scope.postGame = false;
+
     //make a new board
     $scope.makeBoard();
 
+  };
+
+  $scope.checkWinner = function() {
+
+    // if ($scope.checkHorizWin()) {
+    //   $scope.endGame();
+    // }
+
+    $scope.checkAllRows();
+
+  };
+
+  $scope.checkAllRows = function() {
+    for (var i = 0; i < $scope.board.length; i++) {
+      if ($scope.checkRow($scope.board[i])) {$scope.endGame();}
+    }
+  };
+
+  $scope.checkRow = function(row) {
+    var allX = row.cols.filter(function(x){return x.val ==  "x";});
+    var allO = row.cols.filter(function(x){return x.val === "o";});
+
+    if (allX.length === row.cols.length) {
+      return true;
+    } else if (allO.length === row.cols.length) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  $scope.endGame = function() {
+    $scope.gameInProgress = false;
+    $scope.postGame = true;
+    $scope.winMessage = (($scope.turn) ? "green" : "orange") + " wins!!!";
   };
 
 }]);

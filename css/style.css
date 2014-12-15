@@ -2,6 +2,8 @@ body {
   text-align: center;
 }
 
+
+
 .game {
   max-width: 800px;
   margin: 0 auto;
@@ -54,4 +56,8 @@ body {
 .resetButton {
   display: block;
   margin: 0 auto;
+}
+
+#size-slider {
+  margin: 0 0 10px 0;
 }
