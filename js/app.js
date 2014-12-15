@@ -27,7 +27,6 @@ app.controller('GameController', ['$scope', function($scope) {
       {
         index: i,
         cols: [],
-        complete: false
       });
 
       //add the columns
@@ -100,27 +99,63 @@ app.controller('GameController', ['$scope', function($scope) {
 
   $scope.checkWinner = function() {
 
-    // if ($scope.checkHorizWin()) {
-    //   $scope.endGame();
-    // }
-
-    $scope.checkAllRows();
-
-  };
-
-  $scope.checkAllRows = function() {
-    for (var i = 0; i < $scope.board.length; i++) {
-      if ($scope.checkRow($scope.board[i])) {$scope.endGame();}
+    if ($scope.checkRows() || $scope.checkCols() ||  $scope.checkDiags()) {
+      $scope.endGame();
     }
+
   };
 
-  $scope.checkRow = function(row) {
-    var allX = row.cols.filter(function(x){return x.val ==  "x";});
-    var allO = row.cols.filter(function(x){return x.val === "o";});
+  $scope.checkRows = function() {
+    var row;
+    for (var i = 0; i < $scope.board.length; i++) {
+      if ($scope.checkSegment($scope.board[i].cols)) { return true; }
+    }
+    return false;
+  };
 
-    if (allX.length === row.cols.length) {
+  $scope.checkCols = function() {
+    var col;
+
+    for (var i = 0; i < $scope.board.length; i++) {
+      col = [];
+      for (var ii = 0; ii < $scope.board.length; ii++) {
+        col.push({ val: $scope.board[ii].cols[i].val });
+      }
+
+      if ($scope.checkSegment(col)) { return true; }
+    }
+
+    return false;
+  };
+
+  $scope.checkDiags = function() {
+    var seg1 = [];
+    var seg2 = [];
+
+    var ii = $scope.board.length-1;
+
+    for (var i = 0; i < $scope.board.length; i++) {
+      seg1.push({ val: $scope.board[i].cols[i].val });
+      seg2.push({ val: $scope.board[ii].cols[i].val });
+
+      ii--;
+    }
+
+    if ($scope.checkSegment(seg1) || $scope.checkSegment(seg2)) {return true;}
+    else {return false}
+  };
+
+  //****
+  // Given an array of objects, check if every prop "val" is an "x", or if
+  // each is an "o". Return true in the above cases and false otherwise
+  //****
+  $scope.checkSegment = function(seg) {
+    var allX = seg.filter(function(x){return x.val === "x";});
+    var allO = seg.filter(function(x){return x.val === "o";});
+
+    if (allX.length === seg.length) {
       return true;
-    } else if (allO.length === row.cols.length) {
+    } else if (allO.length === seg.length) {
       return true;
     } else {
       return false;
