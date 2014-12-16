@@ -12,27 +12,27 @@
 </head>
 <body>
   <header>
-    <h1>tic tac <sup>toe</sup></h1>
+    <h1>tic tac toe</h1>
   </header>
 
   <div class="game" ng-controller="GameController">
 
-    <input type="range" min="3" max="10" ng-model="boardSize" id="size-slider">
+<!--     <input type="range" min="3" max="10" ng-model="boardSize" id="size-slider">
     <span ng-bind="boardSize"></span>
-    <br>
+    <br> -->
 
     <!-- Game board -->
-    <div class="board">
-      <div class="row" ng-repeat="row in board" ng-click="">
-        <div class="square crossed" ng-repeat="col in row.cols" ng-click="postGame || clickSquare(col)" ng-class="{playerOne: turn, playerTwo: !turn, filled: col.filled, xMark: col.val === 'x', oMark: col.val === 'o', disabled: postGame }">{{ col.val }}
+      <div class="board">
+        <div class="row" ng-repeat="row in board" ng-click="">
+          <div class="square crossed" ng-repeat="col in row.cols" ng-click="postGame || clickSquare(col)" ng-class="{playerOne: turn, playerTwo: !turn, filled: col.filled, xMark: col.val === 'x', oMark: col.val === 'o', disabled: postGame, winner: col.winner }">{{ col.val }}
+          </div>
         </div>
       </div>
+
+      <button class="resetButton" ng-click="resetGame()">reset</button>
+      <p ng-bind="winMessage"></p>
+
     </div>
-
-    <button class="resetButton" ng-click="resetGame()">reset</button>
-    <p ng-bind="winMessage"></p>
-
-  </div>
 
   <!-- What the game board will look like if it's 3x3:
   <div class="board">

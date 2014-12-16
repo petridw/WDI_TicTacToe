@@ -10,10 +10,11 @@ app.controller('GameController', ['$scope', function($scope) {
   $scope.postGame = false;
 
   //whenever boardSize changes, dynamically update the board
-  $scope.$watch("boardSize", function() {
-    $scope.makeBoard();
-  });
+  // $scope.$watch("boardSize", function() {
+  //   $scope.makeBoard();
+  // });
 
+  //Make the gameboard
   $scope.makeBoard = function() {
  
     $scope.board = [];
@@ -36,11 +37,18 @@ app.controller('GameController', ['$scope', function($scope) {
         {
           index: ii,
           val: "",
-          filled: false
+          filled: false,
+          winner: false
         });
       }
     }
   };
+
+  $scope.makeBoard();
+
+
+
+
 
   $scope.clickSquare = function (col) {
     //start game if it hasn't been started
@@ -72,8 +80,8 @@ app.controller('GameController', ['$scope', function($scope) {
 
     //disable the size slider so that the board can't be reset
     //during the game
-    sizeSlider = document.getElementById("size-slider");
-    sizeSlider.disabled = true;
+    // sizeSlider = document.getElementById("size-slider");
+    // sizeSlider.disabled = true;
 
     $scope.gameInProgress = true;
     $scope.winMessage = "";
@@ -127,14 +135,22 @@ app.controller('GameController', ['$scope', function($scope) {
     return true;
   };
 
+  //****
+  // If any row is a winner return true, otherwise false
+  //****
   $scope.checkRows = function() {
-    var row;
     for (var i = 0; i < $scope.board.length; i++) {
-      if ($scope.checkSegment($scope.board[i].cols)) { return true; }
+      if ($scope.checkSegment($scope.board[i].cols)) { 
+        // for (var ii=0; ii < $scope.board.length; ii++) { $scope.board[i].cols[ii].winner=true; }
+        return true;
+      }
     }
     return false;
   };
 
+  //****
+  // If any column is a winner return true, otherwise false
+  //****
   $scope.checkCols = function() {
     var col;
 
@@ -150,6 +166,9 @@ app.controller('GameController', ['$scope', function($scope) {
     return false;
   };
 
+  //****
+  // If any diagonal is a winner return true, otherwise false
+  //****
   $scope.checkDiags = function() {
     var seg1 = [];
     var seg2 = [];
@@ -163,13 +182,16 @@ app.controller('GameController', ['$scope', function($scope) {
       ii--;
     }
 
-    if ($scope.checkSegment(seg1) || $scope.checkSegment(seg2)) {return true;}
-    else {return false}
+    if ($scope.checkSegment(seg1) || $scope.checkSegment(seg2)) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   //****
-  // Given an array of objects, check if every prop "val" is an "x", or if
-  // each is an "o". Return true in the above cases and false otherwise
+  // Given an array of objects, check if all of object's val properties are "x", 
+  // or if they're all "o". Return true in the above cases and false otherwise
   //****
   $scope.checkSegment = function(seg) {
     var allX = seg.filter(function(x){return x.val === "x";});
@@ -184,6 +206,8 @@ app.controller('GameController', ['$scope', function($scope) {
     }
   };
 
+  //****
+  //End the game and display a 
   $scope.endGame = function(tie) {
 
     $scope.gameInProgress = false;

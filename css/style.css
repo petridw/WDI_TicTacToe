@@ -98,21 +98,18 @@ body {
 
 }
 
-.square.playerOne:hover {
+.square.playerOne:hover:not(.disabled) {
   border: 2px solid #FF5D3D;
 }
 .square.playerOne.filled:hover {
   border: none;
 }
 
-.square.playerTwo:hover {
+.square.playerTwo:hover:not(.disabled) {
   border: 2px solid #4A67FF;
 }
 .square.playerTwo.filled:hover {
   border: none;
-}
-
-.square.filled:hover {
 }
 
 @-webkit-keyframes buzz {
@@ -155,4 +152,8 @@ body {
   animation-timing-function: linear;
   -webkit-animation-iteration-count: infinite;
   animation-iteration-count: infinite;
+}
+
+.winner {
+  background: red;
 }
