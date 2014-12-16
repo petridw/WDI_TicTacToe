@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html ng-app="ticTacToeApp">
 <head>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script>
+
+  <link href='http://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script>
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <link rel="stylesheet" type="text/css" href="css/normalize.css">
 
@@ -23,7 +24,7 @@
     <!-- Game board -->
     <div class="board">
       <div class="row" ng-repeat="row in board" ng-click="">
-        <div class="square" ng-repeat="col in row.cols" ng-click="postGame || clickSquare(col)" ng-class="{playerOne: turn, playerTwo: !turn, filled: col.filled, xMark: col.val === 'x', oMark: col.val === 'o' }">
+        <div class="square crossed" ng-repeat="col in row.cols" ng-click="postGame || clickSquare(col)" ng-class="{playerOne: turn, playerTwo: !turn, filled: col.filled, xMark: col.val === 'x', oMark: col.val === 'o', disabled: postGame }">{{ col.val }}
         </div>
       </div>
     </div>

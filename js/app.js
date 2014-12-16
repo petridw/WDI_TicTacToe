@@ -100,9 +100,31 @@ app.controller('GameController', ['$scope', function($scope) {
   $scope.checkWinner = function() {
 
     if ($scope.checkRows() || $scope.checkCols() ||  $scope.checkDiags()) {
-      $scope.endGame();
+      $scope.endGame(false);
+    } else if ($scope.checkTie()) {
+      $scope.endGame(true);
     }
 
+  };
+
+  //*****
+  //if board is full, return true
+  //otherwise return false
+  //*****
+  $scope.checkTie = function() {
+    var col;
+    var lineFull;
+
+    for (var i = 0; i < $scope.board.length; i++) {
+      col = $scope.board[i].cols;
+      lineFull = col.filter(function(x) {
+        return x.filled? true : false;
+      });
+      if (lineFull.length !== $scope.board.length) {
+        return false;
+      }
+    }
+    return true;
   };
 
   $scope.checkRows = function() {
@@ -162,10 +184,16 @@ app.controller('GameController', ['$scope', function($scope) {
     }
   };
 
-  $scope.endGame = function() {
+  $scope.endGame = function(tie) {
+
     $scope.gameInProgress = false;
     $scope.postGame = true;
-    $scope.winMessage = (($scope.turn) ? "green" : "orange") + " wins!!!";
+
+    if (tie) {
+      $scope.winMessage = ("Tie game :(");
+    } else {
+      $scope.winMessage = (($scope.turn) ? "X" : "O") + " wins!!!";
+   }
   };
 
 }]);
