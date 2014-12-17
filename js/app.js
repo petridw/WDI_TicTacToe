@@ -1,14 +1,55 @@
-app = angular.module('ticTacToeApp', ['firebase']);
+ticTacToeApp = angular.module('ticTacToeApp', ['firebase']);
 
 app.controller('GameController', ['$scope', '$firebase', 
   function($scope, $firebase) {
 
-    $scope.board = [];
-    $scope.boardSize = 3;
-    $scope.turn = true;
-    $scope.winMessage = "";
-    $scope.gameInProgress = false;
-    $scope.postGame = false;
+    //---------FIREBASE---------
+    var ref = new Firebase("https://petri-tic-tac-toe.firebaseio.com/games");    
+
+    this.board = getBoard();
+
+    setupBoard();
+
+    function getBoard() {
+      var games = $firebase(ref).$asArray();
+
+      //add new game, once it's added get the key
+      var gameKey;
+
+      games.$add({
+        rows: [],
+        boardSize: 3,
+        turn: true,
+        winner: "",
+        gameInProgress: false,
+        postGame: false
+      }).then(function(ref){
+        gameKey = ref.key();
+      });
+
+      console.log("gameKey is: " + gameKey);
+      return games.$indexFor(gameKey);
+
+    }
+
+    function setupBoard() {
+      this.board.rows.$add({
+        index: "",
+        squares: []
+      });
+
+      for (var i = 0; i < this.board.rows.length; i++) {
+      }
+    }
+
+    //--------------------------
+
+    // $scope.board = [];
+    // $scope.boardSize = 3;
+    // $scope.turn = true;
+    // $scope.winMessage = "";
+    // $scope.gameInProgress = false;
+    // $scope.postGame = false;
 
     //whenever boardSize changes, dynamically update the board
     // $scope.$watch("boardSize", function() {
@@ -16,36 +57,59 @@ app.controller('GameController', ['$scope', '$firebase',
     // });
 
     //Make the gameboard
-    $scope.makeBoard = function() {
+//     $scope.makeBoard = function() {
    
-      $scope.board = [];
+//       $scope.board = [];
    
-      for (var i = 0; i < $scope.boardSize; i++) {
-
-        console.log("pushing row " + i);
+//       for (var i = 0; i < $scope.boardSize; i++) {
+// g
+//         console.log("pushing row " + i);
         
-        //add the row
-        $scope.board.push(
-        {
-          index: i,
-          cols: [],
-        });
+//         //add the row
+//         $scope.board.push(
+//         {
+//           index: i,
+//           cols: [],
+//         });
 
-        //add the columns
-        for (var ii = 0; ii < $scope.boardSize; ii++) {
-          console.log("row " + i + ", pushing col " + ii);
-          $scope.board[i].cols.push(
-          {
-            index: ii,
-            val: "",
-            filled: false,
-            winner: false
-          });
-        }
-      }
-    };
+//         //add the columns
+//         for (var ii = 0; ii < $scope.boardSize; ii++) {
+//           console.log("row " + i + ", pushing col " + ii);
+//           $scope.board[i].cols.push(
+//           {
+//             index: ii,
+//             val: "",
+//             filled: false,
+//             winner: false
+//           });
+//         }
+//       }
+//     };
 
-    $scope.makeBoard();
+ 
+
+    // $scope.getBoard = function() {
+
+    //   $scope.resetGame();
+
+    //   var board = $firebase(ref).$asArray();
+
+    //   board.$loaded().then(function() {
+    //     console.log("board: " + board);
+
+    //   });
+
+    //   for (var i = 0; i < $scope.boardSize; i++) {
+    //     //add rows
+    //     board.$add([{val: "heh"}, {val: "heh2"}, {val: "heh3"}]);
+
+
+
+    //     //add squares
+    //     // for (var ii = 0; ii < $scope.boardSize; ii++) {
+    //     //   board[i].squares.$add({ val: "", filled: "false", winner: false});
+    //     }
+    // };
 
     $scope.clickSquare = function (col) {
       //start game if it hasn't been started
@@ -73,7 +137,7 @@ app.controller('GameController', ['$scope', '$firebase',
     };
 
     $scope.startGame = function() {
-      var sizeSlider;
+      // var sizeSlider;
 
       //disable the size slider so that the board can't be reset
       //during the game
@@ -86,7 +150,7 @@ app.controller('GameController', ['$scope', '$firebase',
     };
 
     $scope.resetGame = function() {
-      var sizeSlider;
+      // var sizeSlider;
 
       //enable slider
       // sizeSlider = document.getElementById("size-slider");
@@ -98,7 +162,7 @@ app.controller('GameController', ['$scope', '$firebase',
       $scope.postGame = false;
 
       //make a new board
-      $scope.makeBoard();
+      //$scope.makeBoard();
 
     };
 
