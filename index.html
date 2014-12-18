@@ -12,8 +12,9 @@
   <script src="https://cdn.firebase.com/libs/angularfire/0.9.0/angularfire.min.js"></script>
   
   <!-- my stylesheets -->
-  <link rel="stylesheet" type="text/css" href="css/style.css">
   <link rel="stylesheet" type="text/css" href="css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/animations.css">
 
 <!--   <script src="js/app.js"></script>-->
   <script src="js/main.js"></script>
@@ -25,44 +26,37 @@
   <header>
   </header>
 
-  <div class="game" ng-controller="GameController as game">
+  <div class="game" ng-controller="GameController as vm">
 
 <!--     <input type="range" min="3" max="10" ng-model="boardSize" id="size-slider">
     <span ng-bind="boardSize"></span>
     <br> -->
 
+    <div class="info">
+      <input type="text" ng-model="vm.searchString">
+      <button ng-click="vm.getGame(vm.searchString)">Search</button>
+      <p><span ng-bind="vm.searchGame.winner"></span></p>
+      <p>Current board: {{ vm.currentGame.rows }}</p>
+
+    </div>
+
     <!-- Game board -->
       <div class="board">
-        <div class="row" ng-repeat="row in board" ng-click="">
-          <div class="square crossed" ng-repeat="col in row.cols" ng-click="postGame || clickSquare(col)" ng-class="{playerOne: turn, playerTwo: !turn, filled: col.filled, xMark: col.val === 'x', oMark: col.val === 'o', disabled: postGame, winner: col.winner }">{{ col.val }}
+        <div class="row" ng-repeat="row in vm.currentGame.rows">
+          <div  class="square crossed" 
+                ng-repeat="square in row" 
+                ng-click="vm.currentGame.postGame || vm.clickSquare(square)" 
+                ng-class="{playerOne: vm.currentGame.turn, playerTwo: !vm.currentGame.turn, filled: square.filled, xMark: square.val === 'x', oMark: square.val === 'o', disabled: vm.currentGame.postGame, winner: square.winner }">
+              {{ square.val }}
           </div>
         </div>
       </div>
 
-      <button class="resetButton" ng-click="game.resetBoard()">Reset</button>
+      <button class="resetButton" ng-click="vm.resetGame()">New Game</button>
       <p ng-bind="winMessage"></p>
 
     </div>
 
-  <!-- What the game board will look like if it's 3x3:
-  <div class="board">
-    <div class="row">
-      <div class="square"></div>
-      <div class="square"></div>
-      <div class="square"></div>
-    </div>
-    <div class="row">  
-      <div class="square"></div>
-      <div class="square"></div>
-      <div class="square"></div>
-    </div>
-    <div class="row">
-      <div class="square"></div>
-      <div class="square"></div>
-      <div class="square"></div>
-    </div>
-  </div> 
-  -->
 
 </body>
 </html>

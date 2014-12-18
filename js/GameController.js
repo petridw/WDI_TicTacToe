@@ -3,87 +3,148 @@ angular
   .controller("GameController", ['$firebase', GameController]);
 
 function GameController($firebase) {
+
+  var vm = this;
+
   //------------------------------------------------------------------
   // Local variables (only in controller's scope)
   //------------------------------------------------------------------
   var gamesRef = new Firebase("https://petri-tic-tac-toe.firebaseio.com/games");
 
-  //blank game template
   var blankBoard = {
-    rows: {  row1: {
-            s1: { val: "", filled: false, winner: false },
-            s2: { val: "", filled: false, winner: false },
-            s3: { val: "", filled: false, winner: false }
-          }, row2: {
-            s1: { val: "", filled: false, winner: false },
-            s2: { val: "", filled: false, winner: false },
-            s3: { val: "", filled: false, winner: false },
-          }, row3: {
-            s1: { val: "", filled: false, winner: false },
-            s2: { val: "", filled: false, winner: false },
-            s3: { val: "", filled: false, winner: false },
-          }},
-    turn: "x",
+    rows: [ [ { val: "", filled: false, winner: false },
+              { val: "", filled: false, winner: false },
+              { val: "", filled: false, winner: false } ],
+            [ { val: "", filled: false, winner: false },
+              { val: "", filled: false, winner: false },
+              { val: "", filled: false, winner: false } ], 
+            [ { val: "", filled: false, winner: false },
+              { val: "", filled: false, winner: false },
+              { val: "", filled: false, winner: false } ]
+          ],
+    turn: true,
     winner: "",
     gameInProgress: false,
     postGame: false
   };
 
   //------------------------------------------------------------------
-  // Properties available to the View
+  // Variables available to the View
   //------------------------------------------------------------------
-  this.board = {};
+  vm.games = $firebase(gamesRef).$asArray();
+  vm.currentGame = null;
+  vm.searchString = null;
+  vm.searchGame = null;
 
   //------------------------------------------------------------------
   // Functions available to the View
   //------------------------------------------------------------------
-  this.resetBoard = resetBoard;
+  vm.resetGame = resetGame;
+  vm.getGame = getGame;
+  vm.clickSquare = clickSquare;
 
   //------------------------------------------------------------------
-  // Functions
+  // Functions - Firebase
   //------------------------------------------------------------------
 
-  //******************************************************
-  // Add a new game board to the /games/ firebase 
-  //******************************************************
-  function getNewBoard() {
-    console.log("in getNewBoard...");
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Add a new game and set it to the current game
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  function addGame() {
+    console.log("in addGame...");
 
-    var games = $firebase(gamesRef).$asArray();
+    var key;
 
-    //once games is loaded
-    games.$loaded().then(function(ref) {
-      games.$add(blankBoard).then(function(ref) {
-        var key = ref.key();
-        console.log("added record with key: " + key);
+    vm.games.$add(blankBoard)
+      .then(setCurrentGame, catchError);
 
-        this.board = games.$getRecord(key);
-        console.log("have new board: " + this.board);
-
-      }, catchError);
-    }, catchError);
-
-    var newestGame = games[games.length];
-
-    console.log("newest game: " + newestGame);
   }
 
-  function resetBoard() {
-    console.log("in resetBoard()");
 
-    this.board = getNewBoard();
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Given a key, set the current game to that game
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  function setCurrentGame(ref) {
+    console.log("in setCurrentGame...");
+
+    var key = ref.key();
+
+    vm.currentGame = getGame(key);
+
   }
 
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Get a specific game reference
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  function getGame(key) {
+    //needs to return a game $asObject
+    console.log("in getGame...");
+    var game = vm.games.$getRecord(key);
+
+    return game;
+  }
+
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Reset the play area to a fresh state
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  function resetGame() {
+    console.log("in resetGame...");
+
+    addGame();
+  }
+
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Catch errors from angular fire promises and log them
+  // to console
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
   function catchError(error) {
     console.error("in catchError: ", error);
   }
 
 
+  //------------------------------------------------------------------
+  // Functions - Game Logic
+  //------------------------------------------------------------------
 
+  function clickSquare (square) {
+    //start game if it hasn't been started
+    if (vm.currentGame.gameInProgress) {
+      startGame();
+    }
 
+    //if square isn't marked, mark it & change turns
+    if (!square.filled) {
+      square.filled = true;
 
+      square.val = vm.currentGame.turn ? "x" : "o";
 
+      //$scope.checkWinner();
 
+      //change turns
+      vm.currentGame.turn = !vm.currentGame.turn;
+
+      //send changes to firebase
+      saveCurrentGame();
+    }
+  }
+
+  function saveCurrentGame() {
+    console.log("saving game state...");
+    vm.games.$save(vm.currentGame);
+  }
+
+  function startGame() {
+
+    vm.currentGame.gameInProgress = true;
+    vm.currentGame.winMessage = "";
+
+  }
+
+  function checkWinner() {
+    if (checkRows() || checkCols() || checkDiags()) {
+      
+    }
+  }
 
 
 }

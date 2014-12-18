@@ -1,12 +1,20 @@
 body {
   text-align: center;
 }
+ul {
+  list-style-type: none;
+}
 
-
+.info {
+  text-align: left;
+  text-decoration: none;
+  list-style-type: none;
+  background: #AAAAAA;
+}
 
 .game {
-  max-width: 800px;
-  margin: 0 auto;
+/*  max-width: 800px;
+*/  margin: 0 auto;
   text-align: center;
 }
 
@@ -65,39 +73,6 @@ body {
   margin: 0 0 10px 0;
 }
 
-@-webkit-keyframes pulse-grow {
-  to {
-    -webkit-transform: scale(1.1);
-    transform: scale(1.1);
-  }
-}
-
-@keyframes pulse-grow {
-  to {
-    -webkit-transform: scale(1.1);
-    transform: scale(1.1);
-  }
-}
-
-.square {
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-}
-.square:hover:not(.disabled), .square:focus:not(.disabled), .square:active:not(.disabled) {
-  -webkit-animation-name: pulse-grow;
-  animation-name: pulse-grow;
-  -webkit-animation-duration: 0.3s;
-  animation-duration: 0.3s;
-  -webkit-animation-timing-function: linear;
-  animation-timing-function: linear;
-  -webkit-animation-iteration-count: infinite;
-  animation-iteration-count: infinite;
-  -webkit-animation-direction: alternate;
-  animation-direction: alternate;
-
-}
-
 .square.playerOne:hover:not(.disabled) {
   border: 2px solid #FF5D3D;
 }
@@ -110,48 +85,6 @@ body {
 }
 .square.playerTwo.filled:hover {
   border: none;
-}
-
-@-webkit-keyframes buzz {
-  50% {
-    -webkit-transform: translateX(3px) rotate(2deg);
-    transform: translateX(3px) rotate(2deg);
-  }
-
-  100% {
-    -webkit-transform: translateX(-3px) rotate(-2deg);
-    transform: translateX(-3px) rotate(-2deg);
-  }
-}
-
-@keyframes buzz {
-  50% {
-    -webkit-transform: translateX(3px) rotate(2deg);
-    transform: translateX(3px) rotate(2deg);
-  }
-
-  100% {
-    -webkit-transform: translateX(-3px) rotate(-2deg);
-    transform: translateX(-3px) rotate(-2deg);
-  }
-}
-
-.square.filled {
-  display: inline-block;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-}
-
-.square.filled:hover:not(.disabled), .square.filled:focus:not(.disabled), .square.filled:active:not(.disabled) {
-  -webkit-animation-name: buzz;
-  animation-name: buzz;
-  -webkit-animation-duration: 0.30s;
-  animation-duration: 0.30s;
-  -webkit-animation-timing-function: linear;
-  animation-timing-function: linear;
-  -webkit-animation-iteration-count: infinite;
-  animation-iteration-count: infinite;
 }
 
 .winner {
