@@ -5,19 +5,34 @@ ul {
   list-style-type: none;
 }
 
-.info {
-  text-align: left;
-  text-decoration: none;
-  list-style-type: none;
-  background: #AAAAAA;
-}
-
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- game
+- - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 .game {
-/*  max-width: 800px;
-*/  margin: 0 auto;
-  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+-  controls
+- - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+.controls {
+  background: #AAAAAA;
+  width: 300px;
+  text-align: left;
+}
+.controls input {
+  display: block;
+}
+.controls button {
+  text-align: left;
+  display: block;
+}
+
+
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+-  game board
+- - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 .board {
   margin: 0 auto 10px auto;
   padding-bottom: 0;
@@ -55,22 +70,11 @@ ul {
 }
 
 .square.filled.xMark {
-
   color: #FF5D3D;
 }
 
 .square.filled.oMark {
-
   color: #4A67FF;
-}
-
-.resetButton {
-  display: block;
-  margin: 0 auto;
-}
-
-#size-slider {
-  margin: 0 0 10px 0;
 }
 
 .square.playerOne:hover:not(.disabled) {

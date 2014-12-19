@@ -24,20 +24,16 @@
 </head>
 <body ng-app="ticTacToeApp">
   <header>
+    <h1>tic tac toe</h1>
   </header>
 
   <div class="game" ng-controller="GameController as vm">
 
-<!--     <input type="range" min="3" max="10" ng-model="boardSize" id="size-slider">
-    <span ng-bind="boardSize"></span>
-    <br> -->
-
-    <div class="info">
-      <input type="text" ng-model="vm.searchString">
-      <button ng-click="vm.getGame(vm.searchString)">Search</button>
-      <p><span ng-bind="vm.searchGame.winner"></span></p>
-      <p>Current board: {{ vm.currentGame.rows }}</p>
-
+    <div class="controls">
+      Name:<input type="text">
+      <button class="teamButton">Join team X</button>
+      <button class="teamButton">Join team O</button>
+      <button class="resetButton" ng-click="vm.resetGame()">New Game</button>
     </div>
 
     <!-- Game board -->
@@ -51,9 +47,6 @@
           </div>
         </div>
       </div>
-
-      <button class="resetButton" ng-click="vm.resetGame()">New Game</button>
-      <p ng-bind="winMessage"></p>
 
     </div>
 

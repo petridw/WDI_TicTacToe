@@ -25,7 +25,8 @@ function GameController($firebase) {
     turn: true,
     winner: "",
     gameInProgress: false,
-    postGame: false
+    postGame: false,
+    messages: [{name: "", message: ""}]
   };
 
   //------------------------------------------------------------------
@@ -53,11 +54,11 @@ function GameController($firebase) {
   function addGame() {
     console.log("in addGame...");
 
-    var key;
-
-    vm.games.$add(blankBoard)
-      .then(setCurrentGame, catchError);
-
+    //only make new game if current game is empty
+    if (!gameIsEmpty()) {
+      vm.games.$add(blankBoard)
+        .then(setCurrentGame, catchError);
+    }
   }
 
 
@@ -74,11 +75,11 @@ function GameController($firebase) {
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Get a specific game reference
+  // Return reference to a specific game, given the key
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
   function getGame(key) {
-    //needs to return a game $asObject
     console.log("in getGame...");
+
     var game = vm.games.$getRecord(key);
 
     return game;
@@ -118,7 +119,7 @@ function GameController($firebase) {
 
       square.val = vm.currentGame.turn ? "x" : "o";
 
-      //$scope.checkWinner();
+      checkWinner();
 
       //change turns
       vm.currentGame.turn = !vm.currentGame.turn;
@@ -134,17 +135,117 @@ function GameController($firebase) {
   }
 
   function startGame() {
-
     vm.currentGame.gameInProgress = true;
-    vm.currentGame.winMessage = "";
-
   }
 
   function checkWinner() {
     if (checkRows() || checkCols() || checkDiags()) {
-      
+      endGame(false);
+    } else if (checkTie()) {
+      endGame(true);
     }
   }
 
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Check all rows on current gameboard for a winner
+  // return true if there's a winner, false otherwise
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  function checkRows() {
+    console.log("in checkRows...");
+
+    for (var i = 0; i < vm.currentGame.rows.length; i++) {
+      if (checkSet(vm.currentGame.rows[i])) 
+        return true;
+    }
+    return false;
+  }
+
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Check all columns on current gameboard for a winner
+  // return true if there's a winner, false otherwise
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  function checkCols() {
+    console.log("in checkCols...");
+
+    var setToCheck;
+
+    for (var i = 0; i < vm.currentGame.rows.length; i++) {
+      set = [];
+
+      //build a set (array) of all squares at this column index
+      for (var ii = 0; ii < vm.currentGame.rows.length; ii++) {
+        set[ii] = vm.currentGame.rows[ii][i];
+      }
+      if (checkSet(set)) return true;
+    }
+    return false;
+  }
+
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Check all diags on current gameboard for a winner
+  // return true if there's a winner, false otherwise
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  function checkDiags() {
+    var set1 = [vm.currentGame.rows[0][0],
+                vm.currentGame.rows[1][1],
+                vm.currentGame.rows[2][2]];
+    var set2 = [vm.currentGame.rows[2][0],
+                vm.currentGame.rows[1][1],
+                vm.currentGame.rows[0][2]];
+
+    if (checkSet(set1) || checkSet(set2)) return true;
+
+    return false;
+  }
+
+
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // If every spot on the gameboard is taken, return true
+  // otherwise return false
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  function checkTie() {
+    console.log("in checkTie...");
+
+    var allFilled = vm.currentGame.rows.every(function(row){
+      return row.every(function(square){
+        return (square.val !== "");
+      });
+    });
+
+    return allFilled;
+  }
+
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Given an array of squares, check if it's a winning set
+  //   - if it's a winning set, then set their "winner" boolean
+  //     to true
+  // Returns: true - entire set is "x", or entire set is "o"
+  //          false - otherwise
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  function checkSet(squares) {
+      var winner = false;
+
+      var allX = squares.every(function(square){return square.val ==="x";});
+      var allO = squares.every(function(square){return square.val ==="o";});
+
+      if (allX || allO) {
+        winner = true;
+
+        //set "winner" prop for each square to true so view can show the winning set
+        squares.forEach(function(c, i, squares) {squares[i].winner = true;});
+      }
+
+      return winner;
+  }
+
+  function endGame(tie) {
+    vm.currentGame.winner = tie ? "Cat's game!" : (vm.currentGame.turn ? "X wins!" : "O wins!");
+    vm.currentGame.gameInProgress = false;
+    vm.currentGame.postGame = true;
+  }
+
+  function gameIsEmpty() {
+    return false;
+  }
 
 }

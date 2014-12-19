@@ -1,5 +1,7 @@
 
-/*Pulse-Grow*/
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+-  pulse grow
+- - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 @-webkit-keyframes pulse-grow {
   to {
     -webkit-transform: scale(1.1);
@@ -33,7 +35,9 @@
 
 }
 
-/*Buzz
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+-  buzz
+- - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 @-webkit-keyframes buzz {
   50% {
     -webkit-transform: translateX(3px) rotate(2deg);
