@@ -1,5 +1,5 @@
 angular
-  .module("ticTacToeApp")
+  .module("ticTacToeApp", ['firebase'])
   .controller("GameController", ['$firebase', GameController]);
 
 function GameController($firebase) {
@@ -26,13 +26,16 @@ function GameController($firebase) {
     winner: "",
     gameInProgress: false,
     postGame: false,
-    messages: [{name: "", message: ""}]
+    messages: [{name: "", message: ""}],
+    player1: "",
+    player2: ""
   };
 
   //------------------------------------------------------------------
   // Variables available to the View
   //------------------------------------------------------------------
   vm.games = $firebase(gamesRef).$asArray();
+  vm.recentGames = $firebase(gamesRef.limitToLast(10)).$asArray();
   vm.currentGame = null;
   vm.searchString = null;
   vm.searchGame = null;
@@ -43,6 +46,7 @@ function GameController($firebase) {
   vm.resetGame = resetGame;
   vm.getGame = getGame;
   vm.clickSquare = clickSquare;
+  vm.setCurrentGame = setCurrentGame;
 
   //------------------------------------------------------------------
   // Functions - Firebase
@@ -57,18 +61,29 @@ function GameController($firebase) {
     //only make new game if current game is empty
     if (!gameIsEmpty()) {
       vm.games.$add(blankBoard)
-        .then(setCurrentGame, catchError);
+        .then(function(ref) {
+          setCurrentGame(ref.key());
+          // vm.currentGame.time = Firebase.ServerValue.TIMESTAMP;
+          vm.currentGame.time = new Date().getTime();
+          saveCurrentGame();
+        }, catchError);
     }
+  }
+
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Set datetime of blank board to now
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  function setDate() {
+    blankBoard.date = new Date().getTime();
   }
 
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Given a key, set the current game to that game
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  function setCurrentGame(ref) {
+  function setCurrentGame(key) {
     console.log("in setCurrentGame...");
-
-    var key = ref.key();
+    console.log("was given key: " + key)
 
     vm.currentGame = getGame(key);
 
@@ -102,14 +117,13 @@ function GameController($firebase) {
     console.error("in catchError: ", error);
   }
 
-
   //------------------------------------------------------------------
   // Functions - Game Logic
   //------------------------------------------------------------------
 
   function clickSquare (square) {
     //start game if it hasn't been started
-    if (vm.currentGame.gameInProgress) {
+    if (!vm.currentGame.gameInProgress) {
       startGame();
     }
 

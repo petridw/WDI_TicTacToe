@@ -17,7 +17,6 @@
   <link rel="stylesheet" type="text/css" href="css/animations.css">
 
 <!--   <script src="js/app.js"></script>-->
-  <script src="js/main.js"></script>
   <script src="js/GameController.js"></script>
 
   <title>tic tac toe</title>
@@ -40,11 +39,14 @@
     <div class="lobbies">
       <h3>Lobbies</h3>
       <ul>
-        <li>
-          stuff
-        </li>
-        <li>
-          more stuff
+        <li ng-repeat="game in vm.recentGames">
+          <div class="lobby">
+            <a href="#" ng-click="vm.setCurrentGame(game.$id)"><span class="link"></span></a>
+            
+            <span ng-show="!game.postGame && !game.gameInProgress">Game not started...</span>
+            <span ng-show="game.gameInProgress">Game in progress...</span>
+            <span ng-show="game.postGame">{{ game.winner }}</span>
+          </div>
         </li>
       </ul>
     </div>
@@ -63,6 +65,8 @@
           </div>
         </div>
       </div>
+
+      <div ng-show="vm.currentGame.postGame">{{ vm.currentGame.winner }}</div>
 
     </div>
 
