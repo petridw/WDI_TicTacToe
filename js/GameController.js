@@ -59,7 +59,7 @@ function GameController($firebase) {
     console.log("in addGame...");
 
     //only make new game if current game is empty
-    if (!gameIsEmpty()) {
+    if ((vm.currentGame === null) || (vm.currentGame.gameInProgress || vm.currentGame.postGame)) {
       vm.games.$add(blankBoard)
         .then(function(ref) {
           setCurrentGame(ref.key());

@@ -5,12 +5,13 @@ body {
 ul {
   list-style-type: none;
   padding: 0;
+  margin: 0;
 }
 header {
   text-align: center;
 }
 h3 {
-  padding: 0;
+  padding: 0 0 10px 0;
   margin: 0;
   text-align: center;
 }
@@ -20,7 +21,6 @@ h3 {
 - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 .game {
   width: 90vw;
-  height: 90vh;
   margin: 20px auto;
   padding: 10px;
 
@@ -33,25 +33,40 @@ h3 {
 .controls {
   display: inline-block;
   padding: 10px;
-  background: #AAAAAA;
+  background: #F9BF3B;
   text-align: left;
   width: 20%;
   font-size: 14px;
+  color: white;
 
 }
 .controls input {
   box-sizing: border-box;
   width: 90%;
-  margin: 2px auto;
+  margin: 4px auto;
+  padding: 5px;
+  border: 0;  
   display: block;
+  color: black;
 
 }
 .controls button {
   box-sizing: border-box;
-  margin: 2px auto;
+  margin: 4px auto;
+  padding: 5px;
   text-align: left;
   display: block;
   width: 90%;
+  border: 0;
+  background: white;
+  color: black;
+}
+.controls button:hover {
+  background: #E26A6A;
+}
+
+.controls .teamButton:hover {
+  background: #F39C12;
 }
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -61,17 +76,18 @@ h3 {
   display: block;
   width: 20%;
   padding: 10px;
-  background: #AAAAAA;
+  background: #26A65B;
   float: right;
   text-align: left;
+  color: white;
 }
 
 .lobby {
   position: relative;
   margin: 1px 0;
-  border: 1px solid blue;
+  padding: 5px;
   background: white;
-  border-radius: 2px;
+  color: black;
 }
 .lobby:hover {
   background: #81CFE0;
@@ -160,4 +176,7 @@ h3 {
 
 .winner {
   background: red;
+}
+.clear {
+  clear: both;
 }

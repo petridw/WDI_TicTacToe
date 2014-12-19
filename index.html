@@ -29,7 +29,7 @@
   <div class="game" ng-controller="GameController as vm">
 
     <div class="controls">
-      <h3>Setup game</h3>
+      <h3>Setup</h3>
       <input type="text" placeholder="Name...">
       <button class="teamButton">Join team X</button>
       <button class="teamButton">Join team O</button>
@@ -42,7 +42,7 @@
         <li ng-repeat="game in vm.recentGames">
           <div class="lobby">
             <a href="#" ng-click="vm.setCurrentGame(game.$id)"><span class="link"></span></a>
-            
+
             <span ng-show="!game.postGame && !game.gameInProgress">Game not started...</span>
             <span ng-show="game.gameInProgress">Game in progress...</span>
             <span ng-show="game.postGame">{{ game.winner }}</span>
@@ -67,6 +67,8 @@
       </div>
 
       <div ng-show="vm.currentGame.postGame">{{ vm.currentGame.winner }}</div>
+
+      <div class="clear"></div>
 
     </div>
 
