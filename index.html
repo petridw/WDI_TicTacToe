@@ -30,10 +30,26 @@
   <div class="game" ng-controller="GameController as vm">
 
     <div class="controls">
-      Name:<input type="text">
+      <h3>Setup game</h3>
+      <input type="text" placeholder="Name...">
       <button class="teamButton">Join team X</button>
       <button class="teamButton">Join team O</button>
       <button class="resetButton" ng-click="vm.resetGame()">New Game</button>
+    </div>
+
+    <div class="lobbies">
+      <h3>Lobbies</h3>
+      <ul>
+        <li>
+          stuff
+        </li>
+        <li>
+          more stuff
+        </li>
+      </ul>
+    </div>
+
+    <div class="messages">
     </div>
 
     <!-- Game board -->
