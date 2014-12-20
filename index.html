@@ -2,7 +2,8 @@
 <html>
 <head>
   <!-- fonts -->
-  <link href='http://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'> 
+  <link href='http://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Nunito' rel='stylesheet' type='text/css'>
 
   <!-- firebase and angular -->
   <script src='https://cdn.firebase.com/js/client/2.0.4/firebase.js'></script>
@@ -28,47 +29,88 @@
 
   <div class="game" ng-controller="GameController as vm">
 
-    <div class="controls">
+    <!-- - - - - - - - - - - - Controls - - - - - - - - - - - -->
+    <div class="sidebar controls">
       <h3>Setup</h3>
-      <input type="text" placeholder="Name...">
-      <button class="teamButton">Join team X</button>
-      <button class="teamButton">Join team O</button>
-      <button class="resetButton" ng-click="vm.resetGame()">New Game</button>
+      <input type="text" ng-model="vm.playerName" placeholder="Name...">
+      <button class="teamButton"
+              ng-class="{ disabled: vm.currentGame.gameInProgress || 
+                                    (vm.playerName.length < 1) }"
+              ng-click="vm.joinTeam('x')">
+              Join team X
+      </button>
+      <button class="teamButton" 
+              ng-class="{ disabled: vm.currentGame.gameInProgress || (vm.playerName.length < 1) }"
+              ng-click="vm.joinTeam('o')">
+              Join team O
+      </button>
+      <button class="resetButton" ng-click="vm.resetGame()">New Lobby</button>
     </div>
 
-    <div class="lobbies">
+    <!-- - - - - - - - - - - - Lobbies - - - - - - - - - - - -->
+    <div class="sidebar lobbies">
       <h3>Lobbies</h3>
+      <div class="lobby-search">
+        <input type="text" ng-model="vm.lobbySearch" placeholder="Search lobbies...">
+      </div>
       <ul>
-        <li ng-repeat="game in vm.recentGames">
+        <li ng-repeat="game in vm.games | orderBy:'time':true | filter:vm.lobbySearch | limitTo:10 ">
           <div class="lobby">
+            <span class="game-time">{{ game.time | date:'short' }}</span>
+
             <a href="#" ng-click="vm.setCurrentGame(game.$id)"><span class="link"></span></a>
 
             <span ng-show="!game.postGame && !game.gameInProgress">Game not started...</span>
-            <span ng-show="game.gameInProgress">Game in progress...</span>
+            <span ng-show="game.gameInProgress">
+              {{ game.player1 }} vs. {{ game.player2 }}
+            </span>
             <span ng-show="game.postGame">{{ game.winner }}</span>
+
           </div>
+        </li>
+      </ul>
+      <div class="nav-buttons">
+        <button class="nav-button arrow-back"></button>
+        <button class="nav-button arrow-forward"></button>
+      </div>
+    </div>
+
+    <!-- - - - - - - - - - - - Vs Text - - - - - - - - - - - -->
+    <div class="vs-text">
+      <p>{{ vm.currentGame.player1 }} vs {{ vm.currentGame.player2 }}</p>
+    </div>
+
+    <!-- - - - - - - - - - - - Messages - - - - - - - - - - - -->
+    <div class="sidebar messages">
+      <h3>Messages</h3>
+      <form class="message-form">
+        <input type="text" ng-model="vm.newMessage" ng-click="" placeholder="...">
+      </form>
+      <ul class="message-list" ng-show="(vm.currentGame.messages.length > 0)">
+        <li ng-repeat="message in vm.currentGame.messages | limitTo:20">
+          <span>{{ message.name }}: {{ message.content }}</span>
         </li>
       </ul>
     </div>
 
-    <div class="messages">
-    </div>
-
-    <!-- Game board -->
-      <div class="board">
-        <div class="row" ng-repeat="row in vm.currentGame.rows">
-          <div  class="square crossed" 
-                ng-repeat="square in row" 
-                ng-click="vm.currentGame.postGame || vm.clickSquare(square)" 
-                ng-class="{playerOne: vm.currentGame.turn, playerTwo: !vm.currentGame.turn, filled: square.filled, xMark: square.val === 'x', oMark: square.val === 'o', disabled: vm.currentGame.postGame, winner: square.winner }">
-              {{ square.val }}
-          </div>
+    <!-- - - - - - - - - - - - Game board - - - - - - - - - - - -->
+    <div class="board">
+      <div class="row" ng-repeat="row in vm.currentGame.rows">
+        <div  class="square crossed" 
+              ng-repeat="square in row" 
+              ng-click="vm.currentGame.postGame || vm.clickSquare(square)" 
+              ng-class="{playerOne: vm.currentGame.turn, playerTwo: !vm.currentGame.turn, filled: square.filled, xMark: square.val === 'x', oMark: square.val === 'o', disabled: vm.currentGame.postGame, winner: square.winner }">
+            {{ square.val }}
         </div>
       </div>
+    </div>
 
-      <div ng-show="vm.currentGame.postGame">{{ vm.currentGame.winner }}</div>
+    <!-- - - - - - - - - - - - Win Message - - - - - - - - - - - -->
+    <div class="win-message" ng-show="vm.currentGame.postGame">
+      <p>{{ vm.currentGame.winner }}</p>
+    </div>
 
-      <div class="clear"></div>
+    <div class="clear"></div>
 
     </div>
 

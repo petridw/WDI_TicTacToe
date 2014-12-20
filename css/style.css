@@ -1,6 +1,7 @@
 body {
   font-size: 16px;
   height: 100%;
+  background: #0D47A1;
 }
 ul {
   list-style-type: none;
@@ -9,6 +10,9 @@ ul {
 }
 header {
   text-align: center;
+  color: white;
+  font-size: 30px;
+  font-style: Nunito, sans-serif;
 }
 h3 {
   padding: 0 0 10px 0;
@@ -16,15 +20,31 @@ h3 {
   text-align: center;
 }
 
+input {
+  box-sizing: border-box;
+  width: 90%;
+  margin: 4px auto;
+  padding: 5px;
+  border: 0;  
+  display: block;
+  color: black;
+}
+
+.sidebar {
+  margin: 0 0 10px 0;
+}
+
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - game
 - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 .game {
-  width: 90vw;
+  width: 70vw;
+  min-height: 500px;
   margin: 20px auto;
   padding: 10px;
+  text-align: center;
+  background: white;
 
-  border: 1px dashed #999999;
 }
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -32,12 +52,14 @@ h3 {
 - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 .controls {
   display: inline-block;
+  float: left;
   padding: 10px;
   background: #F9BF3B;
   text-align: left;
   width: 20%;
   font-size: 14px;
   color: white;
+  font-size: 14px;
 
 }
 .controls input {
@@ -60,13 +82,18 @@ h3 {
   border: 0;
   background: white;
   color: black;
+
 }
-.controls button:hover {
+.controls button:hover:not(.disabled) {
   background: #E26A6A;
 }
 
-.controls .teamButton:hover {
+.controls .teamButton:hover:not(.disabled) {
   background: #F39C12;
+}
+
+.controls .disabled {
+  background: #AAAAAA;
 }
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -80,6 +107,7 @@ h3 {
   float: right;
   text-align: left;
   color: white;
+  font-size: 14px;
 }
 
 .lobby {
@@ -101,21 +129,107 @@ h3 {
   left: 0;
 }
 
+.nav-buttons {
+  text-align: center;  
+}
+
+.nav-button {
+  border: 0;
+}
+
+.game-time {
+  display: block;
+  text-align: right;
+  font-size: 12px;
+  border-bottom: 1px solid #DDDDDD;
+}
+
+.lobbies input {
+  margin-bottom: 8px;
+}
+
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
 -  messages
 - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+.messages {
+  display: inline-block;
+  clear: left;
+  float: left;
+  padding: 10px;
+  background: #33445D;
+  text-align: left;
+  width: 20%;
+  font-size: 14px;
+  color: white;
+  font-size: 14px;
+
+}
+.messages input {
+  box-sizing: border-box;
+  width: 90%;
+  margin: 4px auto;
+  padding: 5px;
+  border: 0;  
+  display: block;
+  color: black;
+
+}
+
+.message-list {
+  color: black;
+  background: #F8F8F8;
+  padding: 5px;
+}
+
+
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+-  win message
+- - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+.win-message {
+  color: white;
+  font-size: 20px;
+  text-align: center;
+}
+.win-message p {
+  display: inline-block;
+  padding: 5px 10px;
+  border: 8px solid #FFE0B2;
+  background: #FFB74D;
+}
+
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+-  Vs text
+- - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+.vs-text {
+  color: white;
+  font-size: 20px;
+  text-align: center;
+}
+.vs-text p {
+  display: inline-block;
+  padding: 5px 10px;
+  border: 8px solid #7DBCFA;
+  background: #2F36A9;
+}
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
 -  game board
 - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+.container {
+  text-align: center;
+}
+
 .board {
-  display: inline-block;
+/*  display: inline-block;
   position: absolute;
 
   left: 50%;
   top: 50%;
   margin-left: -78px;
-  margin-top: -78px;
+  margin-top: -78px;*/
+
+  display: inline-block;
+  margin: 20px auto;
 
 
   background: grey;
@@ -175,7 +289,7 @@ h3 {
 }
 
 .winner {
-  background: red;
+  background: #FFF176;
 }
 .clear {
   clear: both;

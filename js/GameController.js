@@ -26,7 +26,7 @@ function GameController($firebase) {
     winner: "",
     gameInProgress: false,
     postGame: false,
-    messages: [{name: "", message: ""}],
+    messages: [{name: "", content: ""}],
     player1: "",
     player2: ""
   };
@@ -36,9 +36,15 @@ function GameController($firebase) {
   //------------------------------------------------------------------
   vm.games = $firebase(gamesRef).$asArray();
   vm.recentGames = $firebase(gamesRef.limitToLast(10)).$asArray();
+  // vm.recentGames.$isLoaded().then(function() {
+  //   vm.currentGame = vm.recentGames[vm.recentGames.length];
+  // });
   vm.currentGame = null;
   vm.searchString = null;
   vm.searchGame = null;
+  vm.playerName = "";
+  vm.lobbySearch = null;
+  vm.winMessage = "";
 
   //------------------------------------------------------------------
   // Functions available to the View
@@ -47,10 +53,26 @@ function GameController($firebase) {
   vm.getGame = getGame;
   vm.clickSquare = clickSquare;
   vm.setCurrentGame = setCurrentGame;
+  vm.joinTeam = joinTeam;
 
   //------------------------------------------------------------------
   // Functions - Firebase
   //------------------------------------------------------------------
+
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Join a team
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  function joinTeam(team) {
+    console.log("in joinTeam...");
+
+    if ((vm.playerName.length > 0) && (!vm.currentGame.gameInProgress)) {
+      if ((team === "x") && (vm.currentGame.player1.length === 0)) {
+        vm.currentGame.player1 = vm.playerName;
+      } else if ((team === "o") && (vm.currentGame.player2.length === 0)) {
+        vm.currentGame.player2 = vm.playerName;
+      }
+    }
+  }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Add a new game and set it to the current game
@@ -83,7 +105,7 @@ function GameController($firebase) {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
   function setCurrentGame(key) {
     console.log("in setCurrentGame...");
-    console.log("was given key: " + key)
+    console.log("was given key: " + key);
 
     vm.currentGame = getGame(key);
 
@@ -122,24 +144,24 @@ function GameController($firebase) {
   //------------------------------------------------------------------
 
   function clickSquare (square) {
-    //start game if it hasn't been started
-    if (!vm.currentGame.gameInProgress) {
-      startGame();
-    }
+    if ((vm.currentGame.player1 !== "") && (vm.currentGame.player1 !== "")) {
+      //start game if it hasn't been started
+      vm.currentGame.gameInProgress = true;
 
-    //if square isn't marked, mark it & change turns
-    if (!square.filled) {
-      square.filled = true;
+      //if square isn't marked, mark it & change turns
+      if (!square.filled) {
+        square.filled = true;
 
-      square.val = vm.currentGame.turn ? "x" : "o";
+        square.val = vm.currentGame.turn ? "x" : "o";
 
-      checkWinner();
+        checkWinner();
 
-      //change turns
-      vm.currentGame.turn = !vm.currentGame.turn;
+        //change turns
+        vm.currentGame.turn = !vm.currentGame.turn;
 
-      //send changes to firebase
-      saveCurrentGame();
+        //send changes to firebase
+        saveCurrentGame();
+      }
     }
   }
 
@@ -253,7 +275,9 @@ function GameController($firebase) {
   }
 
   function endGame(tie) {
-    vm.currentGame.winner = tie ? "Cat's game!" : (vm.currentGame.turn ? "X wins!" : "O wins!");
+    vm.currentGame.winner = tie ? "Cat's game!" : 
+                                  (vm.currentGame.turn ? vm.currentGame.player1 + " wins!" : 
+                                                         vm.currentGame.player2 + " wins!");
     vm.currentGame.gameInProgress = false;
     vm.currentGame.postGame = true;
   }
@@ -263,3 +287,7 @@ function GameController($firebase) {
   }
 
 }
+
+
+
+
