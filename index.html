@@ -20,11 +20,11 @@
 <!--   <script src="js/app.js"></script>-->
   <script src="js/GameController.js"></script>
 
-  <title>tic tac toe</title>
+  <title>whaaaaaaat</title>
 </head>
 <body ng-app="ticTacToeApp">
   <header>
-    <h1>tic tac toe</h1>
+    <h1>tic tac whaaat</h1>
   </header>
 
   <div class="game" ng-controller="GameController as vm">
@@ -34,17 +34,22 @@
       <h3>Setup</h3>
       <input type="text" ng-model="vm.playerName" placeholder="Name...">
       <button class="teamButton"
-              ng-class="{ disabled: vm.currentGame.gameInProgress || 
-                                    (vm.playerName.length < 1) }"
+              ng-class="{ disabled: (vm.currentGame == null) || 
+                                    (vm.playerName.length < 1) ||
+                                    vm.currentGame.gameInProgress,
+                          'picked-team': vm.playerTeam === 'x' }"
               ng-click="vm.joinTeam('x')">
               Join team X
       </button>
       <button class="teamButton" 
-              ng-class="{ disabled: vm.currentGame.gameInProgress || (vm.playerName.length < 1) }"
+              ng-class="{ disabled: vm.currentGame.gameInProgress || 
+                                   (vm.playerName.length < 1) ||
+                                   (vm.currentGame == null),
+                          'picked-team': vm.playerTeam === 'o' }"
               ng-click="vm.joinTeam('o')">
               Join team O
       </button>
-      <button class="resetButton" ng-click="vm.resetGame()">New Lobby</button>
+      <button class="resetButton" ng-click="vm.addGame()">New Lobby</button>
     </div>
 
     <!-- - - - - - - - - - - - Lobbies - - - - - - - - - - - -->
@@ -84,11 +89,16 @@
     <div class="sidebar messages">
       <h3>Messages</h3>
       <form class="message-form">
-        <input type="text" ng-model="vm.newMessage" ng-click="" placeholder="...">
+        <input type="text" ng-model="vm.newMessage" placeholder="Send a message...">
+        <button type="submit" ng-class="{ disabled: ((vm.playerName.length < 1) ||
+                                                     (vm.newMessage.length < 1)) }"
+                              ng-click="vm.sendMessage()">
+          =>
+        </button>
       </form>
       <ul class="message-list" ng-show="(vm.currentGame.messages.length > 0)">
         <li ng-repeat="message in vm.currentGame.messages | limitTo:20">
-          <span>{{ message.name }}: {{ message.content }}</span>
+          <span ng-show="message.content.length > 0">{{ message.name }}: {{ message.content }}</span>
         </li>
       </ul>
     </div>

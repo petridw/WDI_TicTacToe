@@ -34,30 +34,55 @@ function GameController($firebase) {
   //------------------------------------------------------------------
   // Variables available to the View
   //------------------------------------------------------------------
-  vm.games = $firebase(gamesRef).$asArray();
-  vm.recentGames = $firebase(gamesRef.limitToLast(10)).$asArray();
-  // vm.recentGames.$isLoaded().then(function() {
-  //   vm.currentGame = vm.recentGames[vm.recentGames.length];
-  // });
   vm.currentGame = null;
+  vm.games = $firebase(gamesRef).$asArray();
+  // vm.recentGames = $firebase(gamesRef.limitToLast(10)).$asArray();
+  vm.games.$loaded().then(setMostRecentGame, catchError);
+
   vm.searchString = null;
   vm.searchGame = null;
   vm.playerName = "";
+  vm.playerTeam = "";
+  vm.newMessage = "";
   vm.lobbySearch = null;
   vm.winMessage = "";
 
   //------------------------------------------------------------------
   // Functions available to the View
   //------------------------------------------------------------------
-  vm.resetGame = resetGame;
+  vm.addGame = addGame;
   vm.getGame = getGame;
   vm.clickSquare = clickSquare;
   vm.setCurrentGame = setCurrentGame;
   vm.joinTeam = joinTeam;
+  vm.sendMessage = sendMessage;
 
   //------------------------------------------------------------------
   // Functions - Firebase
   //------------------------------------------------------------------
+
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Set current game to the most recent game  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  function setMostRecentGame() {
+
+    console.log("setting current game...");
+
+      addGame();
+
+      vm.currentGame = vm.games[vm.games.length-1];
+
+
+    console.log("current game set to: " + vm.currentGame.rows);
+
+  }
+
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Clear out empty games
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  function clearEmptyGames() {
+
+  }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Join a team
@@ -68,8 +93,10 @@ function GameController($firebase) {
     if ((vm.playerName.length > 0) && (!vm.currentGame.gameInProgress)) {
       if ((team === "x") && (vm.currentGame.player1.length === 0)) {
         vm.currentGame.player1 = vm.playerName;
+        vm.playerTeam = "x";
       } else if ((team === "o") && (vm.currentGame.player2.length === 0)) {
         vm.currentGame.player2 = vm.playerName;
+        vm.playerTeam = "o";
       }
     }
   }
@@ -81,15 +108,15 @@ function GameController($firebase) {
     console.log("in addGame...");
 
     //only make new game if current game is empty
-    if ((vm.currentGame === null) || (vm.currentGame.gameInProgress || vm.currentGame.postGame)) {
-      vm.games.$add(blankBoard)
-        .then(function(ref) {
-          setCurrentGame(ref.key());
-          // vm.currentGame.time = Firebase.ServerValue.TIMESTAMP;
-          vm.currentGame.time = new Date().getTime();
-          saveCurrentGame();
-        }, catchError);
-    }
+    // if ((vm.currentGame === null) || (vm.currentGame.gameInProgress || vm.currentGame.postGame)) {
+    
+    vm.games.$add(blankBoard)
+      .then(function(ref) {
+        setCurrentGame(ref.key());
+        // vm.currentGame.time = Firebase.ServerValue.TIMESTAMP;
+        vm.currentGame.time = new Date().getTime();
+        saveCurrentGame();
+      }, catchError);
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -139,28 +166,49 @@ function GameController($firebase) {
     console.error("in catchError: ", error);
   }
 
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Send message
+  // 
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  function sendMessage() {
+    console.log("in sendMessage...");
+    if ((vm.playerName !== "") && (vm.newMessage !== "")) {
+      vm.currentGame.messages.push({ name: vm.playerName, content: vm.newMessage });
+      saveCurrentGame();
+
+      vm.newMessage = "";
+    }
+  }
+
   //------------------------------------------------------------------
   // Functions - Game Logic
   //------------------------------------------------------------------
 
   function clickSquare (square) {
     if ((vm.currentGame.player1 !== "") && (vm.currentGame.player1 !== "")) {
-      //start game if it hasn't been started
-      vm.currentGame.gameInProgress = true;
+      if (((vm.playerTeam === "x") && (vm.currentGame.player1 === vm.playerName)) ||
+          ((vm.playerTeam === "o") && (vm.currentGame.player2 === vm.playerName))) {
+        console.log("player name is: " + vm.playerName);
+        console.log("player 1 name: " + vm.currentGame.player1);
+        console.log("player 2 name: " + vm.currentGame.player2);
 
-      //if square isn't marked, mark it & change turns
-      if (!square.filled) {
-        square.filled = true;
+        //start game if it hasn't been started
+        vm.currentGame.gameInProgress = true;
 
-        square.val = vm.currentGame.turn ? "x" : "o";
+        //if square isn't marked, mark it & change turns
+        if (!square.filled) {
+          square.filled = true;
 
-        checkWinner();
+          square.val = vm.currentGame.turn ? "x" : "o";
 
-        //change turns
-        vm.currentGame.turn = !vm.currentGame.turn;
+          checkWinner();
 
-        //send changes to firebase
-        saveCurrentGame();
+          //change turns
+          vm.currentGame.turn = !vm.currentGame.turn;
+
+          //send changes to firebase
+          saveCurrentGame();
+        }
       }
     }
   }
