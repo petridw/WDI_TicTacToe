@@ -1,23 +1,31 @@
 body {
-  font-size: 16px;
   height: 100%;
+  width: 100%;
   background: #0D47A1;
+  font-size: 12px;
+  background: black;
+  font-family: 'New York';
+
 }
 ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
-header {
-  text-align: center;
-  color: white;
-  font-size: 30px;
-  font-style: Nunito, sans-serif;
-}
+
 h3 {
-  padding: 0 0 10px 0;
+  padding: 0;
   margin: 0;
   text-align: center;
+  font-size: 14px;
+}
+
+h2 {
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  font-size: 18px;
+  font-family: Chicago;
 }
 
 input {
@@ -30,41 +38,53 @@ input {
   color: black;
 }
 
-.sidebar {
-  display: inline-block;
-  margin: 0 0 10px 0;
-  padding: 10px;
-  width: 20vw;
-  font-size: 12px;
-}
-
-.sidebar h3 {
-  font-size: 18px;
-  color: white;
-}
-
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- game
+- main
 - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-.game {
-  width: 95vw;
-  min-height: 500px;
-  margin: 20px auto;
-  padding: 10px;
+.main {
+  width: 100vw;
+  height: 100vh;
+  margin: 0 auto;
+  padding: 0;
   text-align: center;
   background: white;
 
+}
+
+
+/*---------------------------------------------------------------------------------------
+- NAV BAR
+---------------------------------------------------------------------------------------*/
+
+
+/*---------------------------------------------------------------------------------------
+- LEFT SIDEBAR
+---------------------------------------------------------------------------------------*/
+
+.left-sidebar {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  width: 280px;
+  height: 100vh;
+  float: left;
+  background: #3A4D5F;
+  color: #C1C1C1;
+  text-align: left;
+  border-right: 1px solid #AAAAAA;
+}
+
+.logo {
+  border-bottom: 1px solid #DDDDDD;
+  padding: 10px 0;
 }
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
 -  controls
 - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 .controls {
-  display: inline-block;
-  float: left;
-  background: #F9BF3B;
-  text-align: left;
-
+  border-bottom: 1px solid #DDDDDD;
+  padding: 10px 0;
 }
 .controls input {
   box-sizing: border-box;
@@ -73,9 +93,33 @@ input {
   padding: 5px;
   border: 0;  
   display: block;
-  color: black;
 
 }
+
+.controls .team-buttons-container {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.controls .team-buttons-container button {
+  display: inline-block;
+  width: 44%;
+  margin: 0 auto;
+}
+
+.controls .lobby-buttons-container {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.controls .lobby-buttons-container button {
+  display: inline-block;
+  width: 44%;
+  margin: 0 auto;
+}
+
 .controls button {
   box-sizing: border-box;
   margin: 4px auto;
@@ -85,7 +129,6 @@ input {
   width: 90%;
   border: 0;
   background: white;
-  color: black;
 
 }
 .controls button:hover:not(.disabled) {
@@ -108,10 +151,8 @@ input {
 -  lobbies
 - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 .lobbies {
-  width: 30%;
-  background: #26A65B;
-  float: right;
-  text-align: left;
+  border-bottom: 1px solid #DDDDDD;
+  padding: 10px 0;
 }
 
 .lobbies .lobbies-list-container {
@@ -123,7 +164,6 @@ input {
   position: relative;
   margin: 0;
   padding: 0;
-  background: white;
   color: black;
   border-bottom: 1px solid #444444;
   text-align: center;
@@ -143,7 +183,7 @@ input {
 .lobbies .lobby-section {
   display: inline;
   border-right: 1px solid #AAAAAA;
-  padding: 0;
+  padding: 0;a
 }
 
 .lobby .link {
@@ -154,11 +194,12 @@ input {
   left: 0;
 }
 
-.nav-buttons {
+.lobby-nav-buttons {
   text-align: center;  
 }
 
-.nav-button {
+.lobby-nav-button {
+  background: white;
   border: 0;
 }
 
@@ -167,49 +208,13 @@ input {
 }
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
--  messages
-- - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-.messages {
-  float: left;
-  clear: left;
-  background: #33445D;
-  text-align: left;
-  font-size: 14px;
-  font-size: 14px;
-
-}
-.messages input {
-  box-sizing: border-box;
-  width: 80%;
-  margin: 4px auto;
-  padding: 5px;
-  border: 0;  
-  display: inline-block;
-  color: black;
-
-}
-
-.message-list {
-  color: black;
-  background: #F8F8F8;
-  padding: 5px;
-}
-
-.messages button {
-  display: inline;
-  border: 0;
-}
-
-/*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
 -  game status
 - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 .game-status {
-  background: #33445D;
-  float: left;
-  clear: left;
+  padding: 10px 0;
 }
 .game-status .player-status-container {
-  color: white;
+  text-align: center;
 }
 
 .game-status .player-status {
@@ -228,6 +233,89 @@ input {
   margin: 0 5px 0 5px;
 }
 
+
+/*---------------------------------------------------------------------------------------
+- RIGHT SIDEBAR
+---------------------------------------------------------------------------------------*/
+.right-sidebar {
+  display: inline-block;
+  float: right;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 330px;
+  border-left: 1px solid #AAAAAA;
+  background: #EFEFEF;
+  text-align: left;
+
+}
+
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+-  messages
+- - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+.messages {
+  height: 100%;
+  padding-right: 5px;
+}
+
+.chat-welcome {
+  display: inline-block;
+}
+
+.message-list-container {
+  height: 90%;
+  color: black;
+  background: #F8F8F8;
+  padding: 0;
+  border-bottom: 1px solid #666666;
+}
+
+.message-form {
+  display: inline-block;
+  width: 100%;
+  padding: 5px;
+}
+
+.messages input {
+  box-sizing: border-box;
+  margin: 4px auto;
+  padding: 5px;
+  border: 0;  
+  display: inline-block;
+  color: black;
+
+}
+
+.messages button {
+  display: inline;
+  border: 0;
+}
+
+
+
+
+/*---------------------------------------------------------------------------------------
+- GAME AREA
+---------------------------------------------------------------------------------------*/
+
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+-  Vs text
+- - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+.vs-text {
+  display: inline-block;
+  color: white;
+  height: 50px;
+  text-align: center;
+  border: 1px solid #AAAAAA;
+
+}
+.vs-text p {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+
+}
+
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
 -  win message
 - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
@@ -239,44 +327,33 @@ input {
 .win-message p {
   display: inline-block;
   padding: 5px 10px;
-  border: 8px solid #FFE0B2;
-  background: #FFB74D;
+  margin: 0;
+  
+  border: 1px solid #AAAAAA;
 }
 
-/*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
--  Vs text
-- - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-.vs-text {
-  color: white;
-  font-size: 20px;
-  text-align: center;
-}
-.vs-text p {
-  display: inline-block;
-  padding: 5px 10px;
-  border: 8px solid #7DBCFA;
-  background: #2F36A9;
-}
+
+/*---------------------------------------------------------------------------------------
+- GAME BOARD
+---------------------------------------------------------------------------------------*/
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
 -  game board
 - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-.container {
-  text-align: center;
+
+.board-container {
+  display: inline-block;
+  height: 300px;
+  width: 400px;
+  margin: 15px 0 15px 0;
+
+  border: 1px solid #AAAAAA;
 }
 
 .board {
-/*  display: inline-block;
-  position: absolute;
-
-  left: 50%;
-  top: 50%;
-  margin-left: -78px;
-  margin-top: -78px;*/
 
   display: inline-block;
   margin: 20px auto;
-
 
   background: grey;
   padding-bottom: 0;

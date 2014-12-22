@@ -8,6 +8,8 @@
   <!-- firebase and angular -->
   <script src='https://cdn.firebase.com/js/client/2.0.4/firebase.js'></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script>
+<!--   <script src="js/angular.js"></script>
+  <script src="js/firebase.js"></script> -->
 
   <!--angular fire (must be last) -->
   <script src="https://cdn.firebase.com/libs/angularfire/0.9.0/angularfire.min.js"></script>
@@ -20,44 +22,67 @@
 <!--   <script src="js/app.js"></script>-->
   <script src="js/GameController.js"></script>
 
-  <title>whaaaaaaat</title>
+  <title>tic tac whaaat</title>
 </head>
 <body ng-app="ticTacToeApp">
-  <header>
-    <h1>tic tac whaaat</h1>
-  </header>
 
-  <div class="game" ng-controller="GameController as vm">
+  <div class="main" ng-controller="GameController as vm">
 
-    <!-- - - - - - - - - - - - Controls / Setup - - - - - - - - - - - -->
-    <div class="sidebar controls">
-      <h3>Setup</h3>
-      <input type="text" ng-model="vm.playerName" placeholder="Name...">
-      <button class="teamButton"
-              ng-class="{ disabled: (vm.currentGame == null) || 
-                                    (vm.playerName.length < 1) ||
-                                    vm.currentGame.gameInProgress ||
-                                    (vm.currentGame.player1.length > 0),
-                          'picked-team': vm.playerTeam === 'x' }"
-              ng-click="vm.joinTeam('x')">
-              Join as X
-      </button>
-      <button class="teamButton" 
-              ng-class="{ disabled: vm.currentGame.gameInProgress || 
-                                   (vm.playerName.length < 1) ||
-                                   (vm.currentGame == null) ||
-                                   (vm.currentGame.player2.length > 0),
-                          'picked-team': vm.playerTeam === 'o' }"
-              ng-click="vm.joinTeam('o')">
-              Join as O
-      </button>
-      <button ng-show="vm.playerTeam !== ''" class="leave-team" ng-click="vm.leaveTeam()">Leave team</button>
-      <button class="resetButton" ng-click="vm.addGame()">New Lobby</button>
-      <button class="startGame" ng-click="vm.startGame()">Start game</button>
+
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- - - - - - - - - - - - - - NAV BAR - - - - - - - - - - - - - -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- - - - - - - - - - - - LEFT SIDEBAR - - - - - - - - - - - -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+  <div class="left-sidebar">
+
+
+    <!-- - - - - - - - - - - - Logo / title - - - - - - - - - - - -->
+    <div class="logo">
+      <h2>tic tac<br/>whaaaat</h2>
     </div>
 
+
+    <!-- - - - - - - - - - - - Controls / Setup - - - - - - - - - - - -->
+    <div class="controls">
+      <h3>Setup</h3>
+      <input type="text" ng-model="vm.playerName" placeholder="Name...">
+      <div class="team-buttons-container">
+        <button class="teamButton"
+                ng-class="{ disabled: (vm.currentGame == null) || 
+                                      (vm.playerName.length < 1) ||
+                                      vm.currentGame.gameInProgress ||
+                                      (vm.currentGame.player1.length > 0),
+                            'picked-team': vm.playerTeam === 'x' }"
+                ng-click="vm.joinTeam('x')">
+                Join as X
+        </button>
+        <button class="teamButton" 
+                ng-class="{ disabled: vm.currentGame.gameInProgress || 
+                                     (vm.playerName.length < 1) ||
+                                     (vm.currentGame == null) ||
+                                     (vm.currentGame.player2.length > 0),
+                            'picked-team': vm.playerTeam === 'o' }"
+                ng-click="vm.joinTeam('o')">
+                Join as O
+        </button>
+      </div>
+      <button ng-show="vm.playerTeam !== ''" class="leave-team" ng-click="vm.leaveTeam()">Leave team</button>
+      <div class="lobby-buttons-container">
+        <button class="resetButton" ng-click="vm.addGame()">New Lobby</button>
+        <button class="startGame" ng-click="vm.startGame()">Start game</button>
+      </div>
+    </div>
+
+
     <!-- - - - - - - - - - - - Lobbies - - - - - - - - - - - -->
-    <div class="sidebar lobbies">
+    <div class="lobbies">
       <h3>Lobbies</h3>
       <div class="lobby-search">
         <input type="text" ng-model="vm.lobbySearch" placeholder="Search lobbies...">
@@ -86,37 +111,15 @@
           </li>
         </ul>
       </div>
-      <div class="nav-buttons">
-        <button class="nav-button arrow-back"></button>
-        <button class="nav-button arrow-forward"></button>
+      <div class="lobby-nav-buttons">
+        <button class="lobby-nav-button arrow-back"><-</button>
+        <button class="lobby-nav-button arrow-forward">-></button>
       </div>
     </div>
 
-    <!-- - - - - - - - - - - - Vs Text - - - - - - - - - - - -->
-    <div class="vs-text">
-      <p ng-show="vm.currentGame.readyToStart">{{ vm.currentGame.player1 }} vs {{ vm.currentGame.player2 }}</p>
-    </div>
 
-    <!-- - - - - - - - - - - - Messages - - - - - - - - - - - -->
-    <div class="sidebar messages">
-      <h3>Messages</h3>
-      <form class="message-form">
-        <input type="text" ng-model="vm.newMessage" placeholder="Send a message...">
-        <button type="submit" ng-class="{ disabled: ((vm.playerName.length < 1) ||
-                                                     (vm.newMessage.length < 1)) }"
-                              ng-click="vm.sendMessage()">
-          =>
-        </button>
-      </form>
-      <ul class="message-list" ng-show="(vm.currentGame.messages.length > 0)">
-        <li ng-repeat="message in vm.currentGame.messages | limitTo:20">
-          <span ng-show="message.content.length > 0">{{ message.name }}: {{ message.content }}</span>
-        </li>
-      </ul>
-    </div>
-
-    <!-- - - - - - - - - - - - Current Game - - - - - - - - - - - -->
-    <div class="sidebar game-status">
+    <!-- - - - - - - - - - - - Game info - - - - - - - - - - - -->
+    <div class="game-status">
       <h3>Game Info</h3>
       <div class="player-status-container">
         <span>X</span>
@@ -130,15 +133,68 @@
         </div>
       </div>
     </div>
+  </div>
+
+
+
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- - - - - - - - - - - - RIGHT SIDEBAR - - - - - - - - - - - -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <div class="right-sidebar">
+
+      <!-- - - - - - - - - - - - Messages - - - - - - - - - - - -->
+      <div class="messages">
+
+
+        <div class="message-list-container">
+
+          <p class="chat-welcome" ng-show="(vm.currentGame.messages.length === 0)">Welcome to the chat...</p>
+          <ul class="message-list" ng-show="(vm.currentGame.messages.length > 0)">
+            <li ng-repeat="message in vm.currentGame.messages | limitTo:20">
+              <span ng-show="message.content.length > 0">{{ message.name }}: {{ message.content }}</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="message-form">
+          <form>
+            <input type="text" ng-model="vm.newMessage" placeholder="Send a message...">
+            <button type="submit" ng-class="{ disabled: ((vm.playerName.length < 1) ||
+                                                         (vm.newMessage.length < 1)) }"
+                                  ng-click="vm.sendMessage()">
+              =>
+            </button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+
+
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- - - - - - - - - - - - GAME AREA - - - - - - - - - - - -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+  <div class="game-area-container">
+    <!-- - - - - - - - - - - - Vs Text - - - - - - - - - - - -->
+    <div class="vs-text">
+      <p ng-show="vm.currentGame.readyToStart">{{ vm.currentGame.player1 }} vs {{ vm.currentGame.player2 }}</p>
+    </div>
 
     <!-- - - - - - - - - - - - Game board - - - - - - - - - - - -->
-    <div class="board">
-      <div class="row" ng-repeat="row in vm.currentGame.rows">
-        <div  class="square crossed" 
-              ng-repeat="square in row" 
-              ng-click="vm.currentGame.postGame || vm.clickSquare(square)" 
-              ng-class="{playerOne: vm.currentGame.turn, playerTwo: !vm.currentGame.turn, filled: square.filled, xMark: square.val === 'x', oMark: square.val === 'o', disabled: vm.currentGame.postGame, winner: square.winner }">
-            {{ square.val }}
+    <div class="board-container">
+      <div class="board">
+        <div class="row" ng-repeat="row in vm.currentGame.rows">
+          <div  class="square crossed" 
+                ng-repeat="square in row" 
+                ng-click="vm.currentGame.postGame || vm.clickSquare(square)" 
+                ng-class="{playerOne: vm.currentGame.turn, playerTwo: !vm.currentGame.turn, filled: square.filled, xMark: square.val === 'x', oMark: square.val === 'o', disabled: vm.currentGame.postGame, winner: square.winner }">
+              {{ square.val }}
+          </div>
         </div>
       </div>
     </div>
@@ -150,7 +206,10 @@
 
     <div class="clear"></div>
 
-    </div>
+  </div>
+
+
+
 
 
 </body>
