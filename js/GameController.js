@@ -24,12 +24,14 @@ function GameController($firebase) {
           ],
     turn: true,
     winner: "",
+    readyToStart: false,
     gameInProgress: false,
     postGame: false,
     messages: [{name: "", content: ""}],
     player1: "",
     player2: ""
   };
+
 
   //------------------------------------------------------------------
   // Variables available to the View
@@ -56,6 +58,7 @@ function GameController($firebase) {
   vm.setCurrentGame = setCurrentGame;
   vm.joinTeam = joinTeam;
   vm.sendMessage = sendMessage;
+  vm.startGame = startGame;
 
   //------------------------------------------------------------------
   // Functions - Firebase
@@ -86,19 +89,39 @@ function GameController($firebase) {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Join a team
+  // 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
   function joinTeam(team) {
     console.log("in joinTeam...");
 
+    console.log("game in prog? " + vm.currentGame.gameInProgress);
+
+    //can't join a team unless you have a name and game isn't in progress already
     if ((vm.playerName.length > 0) && (!vm.currentGame.gameInProgress)) {
-      if ((team === "x") && (vm.currentGame.player1.length === 0)) {
+
+      if ((team === "x") && (vm.currentGame.player1 === "")) {
+
+        //if player is switching from team "o" then...
+        if (vm.playerTeam === "o") {
+          vm.currentGame.player2 = "";
+        }
         vm.currentGame.player1 = vm.playerName;
         vm.playerTeam = "x";
-      } else if ((team === "o") && (vm.currentGame.player2.length === 0)) {
+      } else if ((team === "o") && (vm.currentGame.player2 === "")) {
+
+        //if player is already on team x then they should switch teams
+        if (vm.playerTeam === "x") {
+          vm.currentGame.player1 = "";
+        }
+
         vm.currentGame.player2 = vm.playerName;
         vm.playerTeam = "o";
       }
+
+      setGameReadyState();
+      saveCurrentGame();
     }
+
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -119,13 +142,6 @@ function GameController($firebase) {
       }, catchError);
   }
 
-  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Set datetime of blank board to now
-  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  function setDate() {
-    blankBoard.date = new Date().getTime();
-  }
-
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Given a key, set the current game to that game
@@ -135,6 +151,7 @@ function GameController($firebase) {
     console.log("was given key: " + key);
 
     vm.currentGame = getGame(key);
+    vm.playerTeam = "";
 
   }
 
@@ -168,7 +185,6 @@ function GameController($firebase) {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Send message
-  // 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
   function sendMessage() {
     console.log("in sendMessage...");
@@ -180,108 +196,76 @@ function GameController($firebase) {
     }
   }
 
-  //------------------------------------------------------------------
-  // Functions - Game Logic
-  //------------------------------------------------------------------
-
-  function clickSquare (square) {
-    if ((vm.currentGame.player1 !== "") && (vm.currentGame.player1 !== "")) {
-      if (((vm.playerTeam === "x") && (vm.currentGame.player1 === vm.playerName)) ||
-          ((vm.playerTeam === "o") && (vm.currentGame.player2 === vm.playerName))) {
-        console.log("player name is: " + vm.playerName);
-        console.log("player 1 name: " + vm.currentGame.player1);
-        console.log("player 2 name: " + vm.currentGame.player2);
-
-        //start game if it hasn't been started
-        vm.currentGame.gameInProgress = true;
-
-        //if square isn't marked, mark it & change turns
-        if (!square.filled) {
-          square.filled = true;
-
-          square.val = vm.currentGame.turn ? "x" : "o";
-
-          checkWinner();
-
-          //change turns
-          vm.currentGame.turn = !vm.currentGame.turn;
-
-          //send changes to firebase
-          saveCurrentGame();
-        }
-      }
-    }
-  }
-
   function saveCurrentGame() {
     console.log("saving game state...");
     vm.games.$save(vm.currentGame);
   }
 
+
+  //------------------------------------------------------------------
+  // Functions - Game Logic
+  //------------------------------------------------------------------
+
+  function clickSquare (square) {
+    console.log("in clickSquare...");
+
+    if (checkIfMyTurn()) {
+
+      //if square isn't marked, mark it & change turns
+      if (!square.filled) {
+
+        square.filled = true;
+
+        square.val = vm.currentGame.turn ? "x" : "o";
+
+        checkWinner();
+
+        //change turns
+        vm.currentGame.turn = !vm.currentGame.turn;
+
+        //send changes to firebase
+        saveCurrentGame();
+      }
+    }
+  }
+
   function startGame() {
-    vm.currentGame.gameInProgress = true;
+    console.log("in startGame...");
+
+    setGameReadyState();
+
+    console.log("ready to start: " + vm.currentGame.readyToStart);
+    if (vm.currentGame.readyToStart) {
+      vm.currentGame.gameInProgress = true;
+    }
+
+    saveCurrentGame();
   }
 
   function checkWinner() {
-    if (checkRows() || checkCols() || checkDiags()) {
-      endGame(false);
-    } else if (checkTie()) {
-      endGame(true);
-    }
-  }
+    var winningSets = [
+                        vm.currentGame.rows[0],
+                        vm.currentGame.rows[1],
+                        vm.currentGame.rows[2],
+                        [vm.currentGame.rows[0][0], vm.currentGame.rows[1][0], vm.currentGame.rows[2][0]],
+                        [vm.currentGame.rows[0][1], vm.currentGame.rows[1][1], vm.currentGame.rows[2][1]],
+                        [vm.currentGame.rows[0][2], vm.currentGame.rows[1][2], vm.currentGame.rows[2][2]],
+                        [vm.currentGame.rows[0][0], vm.currentGame.rows[1][1], vm.currentGame.rows[2][2]],
+                        [vm.currentGame.rows[2][0], vm.currentGame.rows[1][1], vm.currentGame.rows[0][2]]
+                      ];
 
-  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Check all rows on current gameboard for a winner
-  // return true if there's a winner, false otherwise
-  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-  function checkRows() {
-    console.log("in checkRows...");
-
-    for (var i = 0; i < vm.currentGame.rows.length; i++) {
-      if (checkSet(vm.currentGame.rows[i])) 
+    for (var i = 0; i < winningSets.length; i++) {
+      if (checkSet(winningSets[i])) {
+        endGame(false);
         return true;
-    }
-    return false;
-  }
-
-  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Check all columns on current gameboard for a winner
-  // return true if there's a winner, false otherwise
-  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-  function checkCols() {
-    console.log("in checkCols...");
-
-    var setToCheck;
-
-    for (var i = 0; i < vm.currentGame.rows.length; i++) {
-      set = [];
-
-      //build a set (array) of all squares at this column index
-      for (var ii = 0; ii < vm.currentGame.rows.length; ii++) {
-        set[ii] = vm.currentGame.rows[ii][i];
       }
-      if (checkSet(set)) return true;
     }
-    return false;
+    
+    if (checkTie()) {
+      endGame(true);
+      return true;
+    }
   }
-
-  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Check all diags on current gameboard for a winner
-  // return true if there's a winner, false otherwise
-  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-  function checkDiags() {
-    var set1 = [vm.currentGame.rows[0][0],
-                vm.currentGame.rows[1][1],
-                vm.currentGame.rows[2][2]];
-    var set2 = [vm.currentGame.rows[2][0],
-                vm.currentGame.rows[1][1],
-                vm.currentGame.rows[0][2]];
-
-    if (checkSet(set1) || checkSet(set2)) return true;
-
-    return false;
-  }
-
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // If every spot on the gameboard is taken, return true
@@ -322,6 +306,11 @@ function GameController($firebase) {
       return winner;
   }
 
+
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // End the game based on tie status and which player's turn
+  // it was when the game ended
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - 
   function endGame(tie) {
     vm.currentGame.winner = tie ? "Cat's game!" : 
                                   (vm.currentGame.turn ? vm.currentGame.player1 + " wins!" : 
@@ -330,10 +319,33 @@ function GameController($firebase) {
     vm.currentGame.postGame = true;
   }
 
-  function gameIsEmpty() {
+
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Check if game is ready to start
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -   
+  function setGameReadyState() {
+    if ((vm.currentGame.player1.length > 0) && (vm.currentGame.player2.length > 0)) {
+      vm.currentGame.readyToStart = true;
+      return true;
+    }
+
+    vm.currentGame.readyToStart = false;
     return false;
   }
 
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Check if it's the player's turn
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  function checkIfMyTurn() {
+    console.log("in checkIfMyTurn...");
+    if (vm.currentGame.gameInProgress) {
+      if ((vm.playerTeam === "x") && (vm.currentGame.turn) && (vm.playerName === vm.currentGame.player1) ||
+          (vm.playerTeam === "o") && (!vm.currentGame.turn) && (vm.playerName === vm.currentGame.player2)){
+        return true;
+      }
+    }
+    return false;
+  }
 }
 
 

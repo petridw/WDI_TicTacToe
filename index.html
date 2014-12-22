@@ -29,27 +29,30 @@
 
   <div class="game" ng-controller="GameController as vm">
 
-    <!-- - - - - - - - - - - - Controls - - - - - - - - - - - -->
+    <!-- - - - - - - - - - - - Controls / Setup - - - - - - - - - - - -->
     <div class="sidebar controls">
       <h3>Setup</h3>
       <input type="text" ng-model="vm.playerName" placeholder="Name...">
       <button class="teamButton"
               ng-class="{ disabled: (vm.currentGame == null) || 
                                     (vm.playerName.length < 1) ||
-                                    vm.currentGame.gameInProgress,
+                                    vm.currentGame.gameInProgress ||
+                                    (vm.currentGame.player1.length > 0),
                           'picked-team': vm.playerTeam === 'x' }"
               ng-click="vm.joinTeam('x')">
-              Join team X
+              Join as X
       </button>
       <button class="teamButton" 
               ng-class="{ disabled: vm.currentGame.gameInProgress || 
                                    (vm.playerName.length < 1) ||
-                                   (vm.currentGame == null),
+                                   (vm.currentGame == null) ||
+                                   (vm.currentGame.player2.length > 0),
                           'picked-team': vm.playerTeam === 'o' }"
               ng-click="vm.joinTeam('o')">
-              Join team O
+              Join as O
       </button>
       <button class="resetButton" ng-click="vm.addGame()">New Lobby</button>
+      <button class="startGame" ng-click="vm.startGame()">Start game</button>
     </div>
 
     <!-- - - - - - - - - - - - Lobbies - - - - - - - - - - - -->
@@ -82,7 +85,7 @@
 
     <!-- - - - - - - - - - - - Vs Text - - - - - - - - - - - -->
     <div class="vs-text">
-      <p>{{ vm.currentGame.player1 }} vs {{ vm.currentGame.player2 }}</p>
+      <p ng-show="vm.currentGame.readyToStart">{{ vm.currentGame.player1 }} vs {{ vm.currentGame.player2 }}</p>
     </div>
 
     <!-- - - - - - - - - - - - Messages - - - - - - - - - - - -->
@@ -102,6 +105,9 @@
         </li>
       </ul>
     </div>
+
+    <!-- - - - - - - - - - - - Current Game - - - - - - - - - - - -->
+
 
     <!-- - - - - - - - - - - - Game board - - - - - - - - - - - -->
     <div class="board">
