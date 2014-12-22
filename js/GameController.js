@@ -59,6 +59,7 @@ function GameController($firebase) {
   vm.joinTeam = joinTeam;
   vm.sendMessage = sendMessage;
   vm.startGame = startGame;
+  vm.leaveTeam = leaveTeam;
 
   //------------------------------------------------------------------
   // Functions - Firebase
@@ -70,8 +71,6 @@ function GameController($firebase) {
   function setMostRecentGame() {
 
     console.log("setting current game...");
-
-      addGame();
 
       vm.currentGame = vm.games[vm.games.length-1];
 
@@ -122,6 +121,21 @@ function GameController($firebase) {
       saveCurrentGame();
     }
 
+  }
+
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Leave team
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  function leaveTeam() {
+    if (vm.playerTeam === "x") {
+      vm.playerTeam = "";
+      vm.currentGame.player1 = "";
+    } else if (vm.playerTeam === "o") {
+      vm.playerTeam = "";
+      vm.currentGame.player2 = "";
+    }
+
+    saveCurrentGame();
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - -

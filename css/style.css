@@ -31,7 +31,16 @@ input {
 }
 
 .sidebar {
+  display: inline-block;
   margin: 0 0 10px 0;
+  padding: 10px;
+  width: 20vw;
+  font-size: 12px;
+}
+
+.sidebar h3 {
+  font-size: 18px;
+  color: white;
 }
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -53,13 +62,8 @@ input {
 .controls {
   display: inline-block;
   float: left;
-  padding: 10px;
   background: #F9BF3B;
   text-align: left;
-  width: 20%;
-  font-size: 14px;
-  color: white;
-  font-size: 14px;
 
 }
 .controls input {
@@ -104,25 +108,42 @@ input {
 -  lobbies
 - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 .lobbies {
-  display: block;
   width: 30%;
-  padding: 10px;
   background: #26A65B;
   float: right;
   text-align: left;
-  color: white;
-  font-size: 14px;
+}
+
+.lobbies .lobbies-list-container {
+  height: 100%;
+  overflow: auto;
 }
 
 .lobby {
   position: relative;
-  margin: 1px 0 2px 0;
-  padding: 5px;
+  margin: 0;
+  padding: 0;
   background: white;
   color: black;
+  border-bottom: 1px solid #444444;
+  text-align: center;
 }
 .lobby:hover {
   background: #81CFE0;
+}
+
+.lobbies .lobby-info {
+  display: inline-block;
+  padding: 3px 0;
+  margin: 0 2px 0 2px;
+  width: 30%;
+  text-align: left;
+}
+
+.lobbies .lobby-section {
+  display: inline;
+  border-right: 1px solid #AAAAAA;
+  padding: 0;
 }
 
 .lobby .link {
@@ -141,13 +162,6 @@ input {
   border: 0;
 }
 
-.game-time {
-  display: block;
-  text-align: right;
-  font-size: 12px;
-  border-bottom: 1px solid #DDDDDD;
-}
-
 .lobbies input {
   margin-bottom: 8px;
 }
@@ -156,15 +170,11 @@ input {
 -  messages
 - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 .messages {
-  display: inline-block;
-  clear: left;
   float: left;
-  padding: 10px;
+  clear: left;
   background: #33445D;
   text-align: left;
-  width: 20%;
   font-size: 14px;
-  color: white;
   font-size: 14px;
 
 }
@@ -188,6 +198,34 @@ input {
 .messages button {
   display: inline;
   border: 0;
+}
+
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+-  game status
+- - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+.game-status {
+  background: #33445D;
+  float: left;
+  clear: left;
+}
+.game-status .player-status-container {
+  color: white;
+}
+
+.game-status .player-status {
+  display: inline-block;
+  width: 40%;
+  color: white;
+  background: #263333;
+  padding: 5px;
+  margin: 0 5px 0 5px;
+}
+
+.game-status span {
+  display: inline-block;
+  width: 40%;
+  padding: 5px;
+  margin: 0 5px 0 5px;
 }
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - -

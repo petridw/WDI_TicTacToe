@@ -51,6 +51,7 @@
               ng-click="vm.joinTeam('o')">
               Join as O
       </button>
+      <button ng-show="vm.playerTeam !== ''" class="leave-team" ng-click="vm.leaveTeam()">Leave team</button>
       <button class="resetButton" ng-click="vm.addGame()">New Lobby</button>
       <button class="startGame" ng-click="vm.startGame()">Start game</button>
     </div>
@@ -61,22 +62,30 @@
       <div class="lobby-search">
         <input type="text" ng-model="vm.lobbySearch" placeholder="Search lobbies...">
       </div>
-      <ul>
-        <li ng-repeat="game in vm.games | orderBy:'time':true | filter:vm.lobbySearch | limitTo:10 ">
-          <div class="lobby">
-            <span class="game-time">{{ game.time | date:'short' }}</span>
+      <div class="lobbies-list-container">
+        <ul>
+          <li ng-repeat="game in vm.games | orderBy:'time':true | filter:vm.lobbySearch | limitTo: 100">
+            <div class="lobby">
 
-            <a href="#" ng-click="vm.setCurrentGame(game.$id)"><span class="link"></span></a>
+              <a href="#" ng-click="vm.setCurrentGame(game.$id)"><span class="link"></span></a>
 
-            <span ng-show="!game.postGame && !game.gameInProgress">Game not started...</span>
-            <span ng-show="game.gameInProgress">
-              {{ game.player1 }} vs. {{ game.player2 }}
-            </span>
-            <span ng-show="game.postGame">{{ game.winner }}</span>
-
-          </div>
-        </li>
-      </ul>
+              <div class="lobby-section">
+                <span class="lobby-info">
+                  {{ (game.player1.length > 0) ? game.player1 : '?' }} vs. {{ (game.player2.length > 0) ? game.player2 : '?' }}
+                </span>
+              </div>
+              <div class="lobby-section">
+                <span class="lobby-info" ng-show="!game.postGame && !game.gameInProgress">Not started</span>
+                <span class="lobby-info" ng-show="game.gameInProgress">In progress</span>
+                <span class="lobby-info" ng-show="game.postGame">{{ game.winner }}</span>
+              </div>
+              <div class="lobby-section">
+                <span class="lobby-info" class="game-time">{{ game.time | date:'short' }}</span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
       <div class="nav-buttons">
         <button class="nav-button arrow-back"></button>
         <button class="nav-button arrow-forward"></button>
@@ -107,7 +116,20 @@
     </div>
 
     <!-- - - - - - - - - - - - Current Game - - - - - - - - - - - -->
-
+    <div class="sidebar game-status">
+      <h3>Game Info</h3>
+      <div class="player-status-container">
+        <span>X</span>
+        <span>O</span>
+        <br/>
+        <div class="player-status">
+          <span ng-bind="vm.currentGame.player1"></span>
+        </div>
+        <div class="player-status">
+          <span ng-bind="vm.currentGame.player2"></span>
+        </div>
+      </div>
+    </div>
 
     <!-- - - - - - - - - - - - Game board - - - - - - - - - - - -->
     <div class="board">
