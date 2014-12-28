@@ -90,7 +90,7 @@
       <div class="lobbies-list-container">
         <ul>
           <li ng-repeat="game in vm.games | orderBy:'time':true | filter:vm.lobbySearch | limitTo: 100">
-            <div class="lobby">
+            <div class="lobby" ng-class="{'current-lobby': game.$id == vm.currentGame.$id}">
 
               <a href="#" ng-click="vm.setCurrentGame(game.$id)"><span class="link"></span></a>
 
@@ -108,13 +108,28 @@
                 <span class="lobby-info" class="game-time">{{ game.time | date:'short' }}</span>
               </div>
             </div>
+<!--               <table>
+               <tr>
+                <td>
+                  {{ (game.player1.length > 0) ? game.player1 : '?' }} vs. {{ (game.player2.length > 0) ? game.player2 : '?' }}
+                </td>
+                <td>
+                  <span class="lobby-info" ng-show="!game.postGame && !game.gameInProgress">Not started</span>
+                  <span class="lobby-info" ng-show="game.gameInProgress">In progress</span>
+                  <span class="lobby-info" ng-show="game.postGame">{{ game.winner }}</span>
+                </td>
+                <td>
+                  <span class="lobby-info" class="game-time">{{ game.time | date:'short' }}</span>
+                </td>
+               <tr> 
+              </table> -->
           </li>
         </ul>
       </div>
-      <div class="lobby-nav-buttons">
+<!--       <div class="lobby-nav-buttons">
         <button class="lobby-nav-button arrow-back"><-</button>
         <button class="lobby-nav-button arrow-forward">-></button>
-      </div>
+      </div> -->
     </div>
 
 
@@ -153,18 +168,18 @@
           <p class="chat-welcome" ng-show="(vm.currentGame.messages.length === 0)">Welcome to the chat...</p>
           <ul class="message-list" ng-show="(vm.currentGame.messages.length > 0)">
             <li ng-repeat="message in vm.currentGame.messages | limitTo:20">
-              <span ng-show="message.content.length > 0">{{ message.name }}: {{ message.content }}</span>
+              <span ng-show="message.content.length > 0"><span class="message-name">{{ message.name }}</span>: {{ message.content }}</span>
             </li>
           </ul>
         </div>
 
         <div class="message-form">
           <form>
-            <input type="text" ng-model="vm.newMessage" placeholder="Send a message...">
+            <input type="text" ng-model="vm.newMessage" placeholder="Send a message">
             <button type="submit" ng-class="{ disabled: ((vm.playerName.length < 1) ||
                                                          (vm.newMessage.length < 1)) }"
                                   ng-click="vm.sendMessage()">
-              =>
+              Chat
             </button>
           </form>
         </div>
