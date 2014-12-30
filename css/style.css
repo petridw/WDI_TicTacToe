@@ -194,7 +194,8 @@ input {
   padding: 0;a
 }
 .lobbies>.lobby-section:last-of-type {
-  border-right: none;
+  color: brown;
+  border: 0;
 }
 
 .lobby .link {
@@ -269,6 +270,7 @@ input {
 -  messages
 - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 .messages {
+  position: relative;
   height: 100%;
 }
 
@@ -276,8 +278,25 @@ input {
   display: inline-block;
 }
 
+.message-header-container {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  text-align: center;
+}
+
+.message-header p {
+  margin: 0;
+  font-size: 20px;
+}
+
 .message-list-container {
-  height: 90%;
+  position: absolute;
+  box-sizing: border-box;
+  bottom: 42px;
+  top: 30px;
+  overflow: auto;
+  width: 100%;
   color: black;
   background: #F8F8F8;
   padding: 10px;
@@ -285,8 +304,13 @@ input {
   font-size: 14px;
 }
 
-.message-form {
+.message-list {
+}
+
+.message-form-container {
   display: inline-block;
+  position: absolute;
+  bottom: 0;
   width: 100%;
   padding: 5px 5px 5px 0;
   text-align: center;
@@ -309,6 +333,10 @@ input {
 
 .message-name {
   font-weight: bold;
+}
+
+.message {
+  padding-bottom: 5px;
 }
 
 

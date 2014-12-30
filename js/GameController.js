@@ -60,6 +60,7 @@ function GameController($firebase) {
   vm.sendMessage = sendMessage;
   vm.startGame = startGame;
   vm.leaveTeam = leaveTeam;
+  vm.scrollMessages = scrollMessages;
 
   //------------------------------------------------------------------
   // Functions - Firebase
@@ -165,6 +166,14 @@ function GameController($firebase) {
     console.log("was given key: " + key);
 
     vm.currentGame = getGame(key);
+
+    //if player is on a team in the game then set it
+    if (vm.playerName === vm.currentGame.player1) {
+      vm.playerTeam = "x";
+    } else if (vm.playerName === vm.currentGame.player2) {
+      vm.playerTeam = "o";
+    }
+
     vm.playerTeam = "";
 
   }
@@ -207,12 +216,22 @@ function GameController($firebase) {
       saveCurrentGame();
 
       vm.newMessage = "";
+
+      scrollMessages();
     }
   }
 
   function saveCurrentGame() {
     console.log("saving game state...");
     vm.games.$save(vm.currentGame);
+  }
+
+  function scrollMessages() {
+      //scroll the message list to the bottom
+      var messageList = document.getElementsByClassName("message-list-container");
+      messageList[0].scrollTop = messageList[0].scrollHeight;
+
+      console.log("scrolling message window down " + messageList[0].scrollHeight + "px");
   }
 
 

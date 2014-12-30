@@ -2,8 +2,8 @@
 <html>
 <head>
   <!-- fonts -->
-  <link href='http://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Nunito' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Nunito' rel='stylesheet' type='text/css'>
 
   <!-- firebase and angular -->
   <script src='https://cdn.firebase.com/js/client/2.0.4/firebase.js'></script>
@@ -162,18 +162,21 @@
       <!-- - - - - - - - - - - - Messages - - - - - - - - - - - -->
       <div class="messages">
 
+        <div class="message-header-container">
+          <p class="message-player-hello" ng-show="vm.playerName !== ''">Hello, {{vm.playerName}}!</p>
+        </div>
 
         <div class="message-list-container">
 
           <p class="chat-welcome" ng-show="(vm.currentGame.messages.length === 0)">Welcome to the chat...</p>
-          <ul class="message-list" ng-show="(vm.currentGame.messages.length > 0)">
-            <li ng-repeat="message in vm.currentGame.messages | limitTo:20">
+          <ul class="message-list" ng-show="(vm.currentGame.messages.length > 0)" >
+            <li class="message" ng-repeat="message in vm.currentGame.messages">
               <span ng-show="message.content.length > 0"><span class="message-name">{{ message.name }}</span>: {{ message.content }}</span>
             </li>
           </ul>
         </div>
 
-        <div class="message-form">
+        <div class="message-form-container">
           <form>
             <input type="text" ng-model="vm.newMessage" placeholder="Send a message">
             <button type="submit" ng-class="{ disabled: ((vm.playerName.length < 1) ||
