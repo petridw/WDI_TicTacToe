@@ -48,6 +48,8 @@ function GameController($firebase) {
   vm.newMessage = "";
   vm.lobbySearch = null;
   vm.winMessage = "";
+  vm.messageColor = "black";
+  vm.messageColorStyle = {color: vm.messageColor};
 
   //------------------------------------------------------------------
   // Functions available to the View
@@ -61,6 +63,7 @@ function GameController($firebase) {
   vm.startGame = startGame;
   vm.leaveTeam = leaveTeam;
   vm.scrollMessages = scrollMessages;
+  vm.setMessageColor = setMessageColor;
 
   //------------------------------------------------------------------
   // Functions - Firebase
@@ -221,11 +224,17 @@ function GameController($firebase) {
     }
   }
 
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Save current game state to Firebase
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
   function saveCurrentGame() {
     console.log("saving game state...");
     vm.games.$save(vm.currentGame);
   }
 
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Scroll to bottom of messages window
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
   function scrollMessages() {
       //scroll the message list to the bottom
       var messageList = document.getElementsByClassName("message-list-container");
@@ -234,6 +243,14 @@ function GameController($firebase) {
       console.log("scrolling message window down " + messageList[0].scrollHeight + "px");
   }
 
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Set player's message color
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  function setMessageColor() {
+    vm.messageColorStyle = {color: vm.messageColor};
+
+    console.log("style for messages: " + vm.messageColorStyle);
+  }
 
   //------------------------------------------------------------------
   // Functions - Game Logic

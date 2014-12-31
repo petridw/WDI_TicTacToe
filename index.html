@@ -163,7 +163,10 @@
       <div class="messages">
 
         <div class="message-header-container">
-          <p class="message-player-hello" ng-show="vm.playerName !== ''">Hello, {{vm.playerName}}!</p>
+          <div class="message-color-picker-container">
+            <input type="color" class="message-color-picker" value="#FF4242" ng-model="vm.messageColor" ng-change="vm.setMessageColor()">
+          </div>
+          <p class="message-player-hello">Hello, <span ng-show="vm.playerName !== ''">{{vm.playerName}}!</span></p>
         </div>
 
         <div class="message-list-container">
@@ -171,14 +174,14 @@
           <p class="chat-welcome" ng-show="(vm.currentGame.messages.length === 0)">Welcome to the chat...</p>
           <ul class="message-list" ng-show="(vm.currentGame.messages.length > 0)" >
             <li class="message" ng-repeat="message in vm.currentGame.messages">
-              <span ng-show="message.content.length > 0"><span class="message-name">{{ message.name }}</span>: {{ message.content }}</span>
+              <span ng-show="message.content.length > 0"><span class="message-name" ng-style="{color: vm.messageColor}">{{ message.name }}</span>: {{ message.content }}</span>
             </li>
           </ul>
         </div>
 
         <div class="message-form-container">
           <form>
-            <input type="text" ng-model="vm.newMessage" placeholder="Send a message">
+            <input class="message-input" type="text" ng-model="vm.newMessage" placeholder="Send a message">
             <button type="submit" ng-class="{ disabled: ((vm.playerName.length < 1) ||
                                                          (vm.newMessage.length < 1)) }"
                                   ng-click="vm.sendMessage()">

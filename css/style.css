@@ -274,6 +274,25 @@ input {
   height: 100%;
 }
 
+.messages .message-color-picker-container {
+  display: inline-block;
+}
+
+.messages .message-color-picker {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #666666;
+}
+
+.message-player-hello {
+  display: inline-block;
+  font-size: 18px;
+  margin: 0;
+  padding: 5px 0;
+}
+
 .chat-welcome {
   display: inline-block;
 }
@@ -283,6 +302,7 @@ input {
   width: 100%;
   top: 0;
   text-align: center;
+  border-bottom: 1px solid #666666;
 }
 
 .message-header p {
@@ -294,7 +314,7 @@ input {
   position: absolute;
   box-sizing: border-box;
   bottom: 42px;
-  top: 30px;
+  top: 33px;
   overflow: auto;
   width: 100%;
   color: black;
@@ -316,7 +336,7 @@ input {
   text-align: center;
 }
 
-.messages input {
+.messages .message-input {
   box-sizing: border-box;
   margin: 4px auto;
   border: 0;  
