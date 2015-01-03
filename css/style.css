@@ -41,8 +41,6 @@ input {
 - main
 - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 .main {
-  width: 100vw;
-  height: 100vh;
   margin: 0 auto;
   padding: 0;
   text-align: center;
@@ -312,7 +310,7 @@ input {
 .message-list-container {
   position: absolute;
   box-sizing: border-box;
-  bottom: 42px;
+  bottom: 80px;
   top: 33px;
   overflow: auto;
   width: 100%;
@@ -363,27 +361,20 @@ input {
 - bootstrap
 ---------------------------------------------------------------------------------------*/
 #wrapper {
-  padding-left: 250px;
+  padding-right: 300px;
   transition: all 0.4s ease 0s;
 }
 
-.left-sidebar-wrapper {
-  left: 0px;
-  width: 250px;
-  background: #000;
-  position: fixed;
-  height: 100%;
-  overflow-y: auto;
-  z-index: 1000;
-  transition: all 0.4s ease 0s;
-  background: #3A4D5F;
-  color: black;
-  text-align: left;
-  border-right: 1px solid #AAAAAA;
+#wrapper.toggled {
+  padding-right: 0;
+}
+#wrapper.toggled #sidebar-wrapper {
+  right: 0;
 }
 
-.right-sidebar-wrapper {
-  right: 0px;
+#sidebar-wrapper {
+  margin-right: -300px;
+  right: 300px;
   width: 300px;
   background: #000;
   position: fixed;
@@ -391,46 +382,29 @@ input {
   overflow-y: auto;
   z-index: 1000;
   transition: all 0.4s ease 0s;
-  border-left: 1px solid #AAAAAA;
   background: #EFEFEF;
   text-align: left;
-}
-
-#page-content-wrapper {
-  width: 100%;
-}
-
-.sidebar-nav {
-  position: absolute;
-  top: 0;
-  width: 250px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  border-left: 1px solid #AAAAAA;
 }
 
 @media (max-width:815px) {
 
     #wrapper {
-      padding-left: 0;
+      padding-right: 0;
     }
 
-    .left-sidebar-wrapper {
-      left: -250px;
-    }
-
-    .right-sidebar-wrapper {
-      display: none;
+    #sidebar-wrapper {
+      right: 0;
     }
 
     #wrapper.active {
       position: relative;
-      left: 250px;
+      right: -300px;
     }
 
     #wrapper.active #sidebar-wrapper {
-      left: 250px;
-      width: 250px;
+      right: -300px;
+      width: 300px;
       transition: all 0.4s ease 0s;
     }
 

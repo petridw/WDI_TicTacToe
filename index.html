@@ -46,185 +46,199 @@
 
   <div class="main" ng-controller="GameController as vm">
 
+    <div id="wrapper">
 
-  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-  <!-- - - - - - - - - - - - LEFT SIDEBAR - - - - - - - - - - - -->
-  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+      <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+      <!-- - - - - - - - - - - - RIGHT SIDEBAR - - - - - - - - - - - -->
+      <!-- - - - - - - - - - - - - messages - - - - - - - - - - - - -->
 
-  <div class="left-sidebar-wrapper">
+      <div id="sidebar-wrapper">
 
+        <div class="messages">
 
-    <!-- - - - - - - - - - - - Logo / title - - - - - - - - - - - -->
-    <div class="logo">
-      <h2>tic tac<br/>whaaaat</h2>
-    </div>
-
-
-    <!-- - - - - - - - - - - - Controls / Setup - - - - - - - - - - - -->
-    <div class="controls">
-      <h3>Setup</h3>
-      <input type="text" ng-model="vm.playerName" placeholder="Name...">
-      <div class="team-buttons-container">
-        <button class="teamButton"
-                ng-class="{ disabled: (vm.currentGame == null) || 
-                                      (vm.playerName.length < 1) ||
-                                      vm.currentGame.gameInProgress ||
-                                      (vm.currentGame.player1.length > 0),
-                            'picked-team': vm.playerTeam === 'x' }"
-                ng-click="vm.joinTeam('x')">
-                Join as X
-        </button>
-        <button class="teamButton" 
-                ng-class="{ disabled: vm.currentGame.gameInProgress || 
-                                     (vm.playerName.length < 1) ||
-                                     (vm.currentGame == null) ||
-                                     (vm.currentGame.player2.length > 0),
-                            'picked-team': vm.playerTeam === 'o' }"
-                ng-click="vm.joinTeam('o')">
-                Join as O
-        </button>
-      </div>
-      <button ng-show="vm.playerTeam !== ''" class="leave-team" ng-click="vm.leaveTeam()">Leave team</button>
-      <div class="lobby-buttons-container">
-        <button class="resetButton" ng-click="vm.addGame()">New Lobby</button>
-        <button class="startGame" ng-click="vm.startGame()">Start game</button>
-      </div>
-    </div>
-
-
-    <!-- - - - - - - - - - - - Lobbies - - - - - - - - - - - -->
-    <div class="lobbies">
-      <h3>Lobbies</h3>
-      <div class="lobby-search">
-        <input type="text" ng-model="vm.lobbySearch" placeholder="Search lobbies...">
-      </div>
-      <div class="lobbies-list-container">
-        <ul>
-          <li ng-repeat="game in vm.games | orderBy:'time':true | filter:vm.lobbySearch | limitTo: 100">
-            <div class="lobby" ng-class="{'current-lobby': game.$id == vm.currentGame.$id}">
-
-              <a href="#" ng-click="vm.setCurrentGame(game.$id)"><span class="link"></span></a>
-
-              <div class="lobby-section">
-                <span class="lobby-info">
-                  {{ (game.player1.length > 0) ? game.player1 : '?' }} vs. {{ (game.player2.length > 0) ? game.player2 : '?' }}
-                </span>
-              </div>
-              <div class="lobby-section">
-                <span class="lobby-info" ng-show="!game.postGame && !game.gameInProgress">Not started</span>
-                <span class="lobby-info" ng-show="game.gameInProgress">In progress</span>
-                <span class="lobby-info" ng-show="game.postGame">{{ game.winner }}</span>
-              </div>
-              <div class="lobby-section">
-                <span class="lobby-info" class="game-time">{{ game.time | date:'short' }}</span>
-              </div>
+          <div class="message-header-container">
+            <div class="message-color-picker-container">
+              <input type="color" class="message-color-picker" value="#FF4242" ng-model="vm.messageColor" ng-change="vm.setMessageColor()">
             </div>
-          </li>
-        </ul>
-      </div>
-    </div>
+            <p class="message-player-hello">Hello, <span ng-show="vm.playerName !== ''">{{vm.playerName}}!</span></p>
+          </div>
 
+          <div class="message-list-container">
 
-    <!-- - - - - - - - - - - - Game info - - - - - - - - - - - -->
-    <div class="game-status">
-      <h3>Game Info</h3>
-      <div class="player-status-container">
-        <span>X</span>
-        <span>O</span>
-        <br/>
-        <div class="player-status">
-          <span ng-bind="vm.currentGame.player1"></span>
+            <p class="chat-welcome" ng-show="(vm.currentGame.messages.length === 0)">Welcome to the chat...</p>
+            <ul class="message-list" ng-show="(vm.currentGame.messages.length > 0)" >
+              <li class="message" ng-repeat="message in vm.currentGame.messages">
+                <span ng-show="message.content.length > 0"><span class="message-name" ng-style="{color: vm.messageColor}">{{ message.name }}</span>: {{ message.content }}</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="message-form-container">
+            <form>
+              <input class="message-input" type="text" ng-model="vm.newMessage" placeholder="Send a message">
+              <button type="submit" ng-class="{ disabled: ((vm.playerName.length < 1) ||
+                                                           (vm.newMessage.length < 1)) }"
+                                    ng-click="vm.sendMessage()">
+                Chat
+              </button>
+            </form>
+          </div>
         </div>
-        <div class="player-status">
-          <span ng-bind="vm.currentGame.player2"></span>
+
+      </div>
+
+
+      <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+      <!-- - - - - - - - - - - - main content - - - - - - - - - - - -->
+      <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+      <div class="container-fluid">
+
+        <div class="row">
+          <div class="col-md-12 logo">
+            <h1>tic tac toe</h1>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
 
 
+        <!-- - - - - - - - - - - - Controls / Setup - - - - - - - - - - - -->
+        <div class="row">
+          <div class="col-md-4 controls">
+            <h3>Setup</h3>
+            <input type="text" ng-model="vm.playerName" placeholder="Name...">
+            <div class="team-buttons-container">
+              <button class="teamButton"
+                      ng-class="{ disabled: (vm.currentGame == null) || 
+                                            (vm.playerName.length < 1) ||
+                                            vm.currentGame.gameInProgress ||
+                                            (vm.currentGame.player1.length > 0),
+                                  'picked-team': vm.playerTeam === 'x' }"
+                      ng-click="vm.joinTeam('x')">
+                      Join as X
+              </button>
+              <button class="teamButton" 
+                      ng-class="{ disabled: vm.currentGame.gameInProgress || 
+                                           (vm.playerName.length < 1) ||
+                                           (vm.currentGame == null) ||
+                                           (vm.currentGame.player2.length > 0),
+                                  'picked-team': vm.playerTeam === 'o' }"
+                      ng-click="vm.joinTeam('o')">
+                      Join as O
+              </button>
+            </div>
+            <button ng-show="vm.playerTeam !== ''" class="leave-team" ng-click="vm.leaveTeam()">Leave team</button>
+            <div class="lobby-buttons-container">
+              <button class="resetButton" ng-click="vm.addGame()">New Lobby</button>
+              <button class="startGame" ng-click="vm.startGame()">Start game</button>
+            </div>
+            <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Chat</a>
+          </div>
 
 
-  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-  <!-- - - - - - - - - - - - RIGHT SIDEBAR - - - - - - - - - - - -->
-  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+          <!-- - - - - - - - - - - - Lobbies - - - - - - - - - - - -->
+          <div class="col-md-4 lobbies">
+            <h3>Lobbies</h3>
+            <div class="lobby-search">
+              <input type="text" ng-model="vm.lobbySearch" placeholder="Search lobbies...">
+            </div>
+            <div class="lobbies-list-container">
+              <ul>
+                <li ng-repeat="game in vm.games | orderBy:'time':true | filter:vm.lobbySearch | limitTo: 100">
+                  <div class="lobby" ng-class="{'current-lobby': game.$id == vm.currentGame.$id}">
 
-  <div class="right-sidebar-wrapper">
+                    <a href="#" ng-click="vm.setCurrentGame(game.$id)"><span class="link"></span></a>
 
-    <!-- - - - - - - - - - - - Messages - - - - - - - - - - - -->
-    <div class="messages">
-
-      <div class="message-header-container">
-        <div class="message-color-picker-container">
-          <input type="color" class="message-color-picker" value="#FF4242" ng-model="vm.messageColor" ng-change="vm.setMessageColor()">
-        </div>
-        <p class="message-player-hello">Hello, <span ng-show="vm.playerName !== ''">{{vm.playerName}}!</span></p>
-      </div>
-
-      <div class="message-list-container">
-
-        <p class="chat-welcome" ng-show="(vm.currentGame.messages.length === 0)">Welcome to the chat...</p>
-        <ul class="message-list" ng-show="(vm.currentGame.messages.length > 0)" >
-          <li class="message" ng-repeat="message in vm.currentGame.messages">
-            <span ng-show="message.content.length > 0"><span class="message-name" ng-style="{color: vm.messageColor}">{{ message.name }}</span>: {{ message.content }}</span>
-          </li>
-        </ul>
-      </div>
-
-      <div class="message-form-container">
-        <form>
-          <input class="message-input" type="text" ng-model="vm.newMessage" placeholder="Send a message">
-          <button type="submit" ng-class="{ disabled: ((vm.playerName.length < 1) ||
-                                                       (vm.newMessage.length < 1)) }"
-                                ng-click="vm.sendMessage()">
-            Chat
-          </button>
-        </form>
-      </div>
-    </div>
-
-  </div>
+                    <div class="lobby-section">
+                      <span class="lobby-info">
+                        {{ (game.player1.length > 0) ? game.player1 : '?' }} vs. {{ (game.player2.length > 0) ? game.player2 : '?' }}
+                      </span>
+                    </div>
+                    <div class="lobby-section">
+                      <span class="lobby-info" ng-show="!game.postGame && !game.gameInProgress">Not started</span>
+                      <span class="lobby-info" ng-show="game.gameInProgress">In progress</span>
+                      <span class="lobby-info" ng-show="game.postGame">{{ game.winner }}</span>
+                    </div>
+                    <div class="lobby-section">
+                      <span class="lobby-info" class="game-time">{{ game.time | date:'short' }}</span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
 
 
-
-
-  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-  <!-- - - - - - - - - - - - GAME AREA - - - - - - - - - - - -->
-  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
-  <div class="game-area-container">
-    <!-- - - - - - - - - - - - Vs Text - - - - - - - - - - - -->
-    <div class="vs-text">
-      <p ng-show="vm.currentGame.readyToStart">{{ vm.currentGame.player1 }} vs {{ vm.currentGame.player2 }}</p>
-    </div>
-
-    <!-- - - - - - - - - - - - Game board - - - - - - - - - - - -->
-    <div class="board-container container-fluid">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="board">
-            <div class="board-row" ng-repeat="row in vm.currentGame.rows">
-              <div  class="board-square crossed" 
-                    ng-repeat="square in row" 
-                    ng-click="vm.currentGame.postGame || vm.clickSquare(square)" 
-                    ng-class="{playerOne: vm.currentGame.turn, playerTwo: !vm.currentGame.turn, filled: square.filled, xMark: square.val === 'x', oMark: square.val === 'o', disabled: vm.currentGame.postGame, winner: square.winner }">
-                  {{ square.val }}
+          <!-- - - - - - - - - - - - Game info - - - - - - - - - - - -->
+          <div class="col-md-4 game-status">
+            <h3>Game Info</h3>
+            <div class="player-status-container">
+              <span>X</span>
+              <span>O</span>
+              <br/>
+              <div class="player-status">
+                <span ng-bind="vm.currentGame.player1"></span>
+              </div>
+              <div class="player-status">
+                <span ng-bind="vm.currentGame.player2"></span>
               </div>
             </div>
           </div>
         </div>
+
+
+
+
+
+
+
+
+
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+        <!-- - - - - - - - - - - - GAME AREA - - - - - - - - - - - -->
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+        <div class="row">
+          <div class="col-md-12 game-area-container">
+            <!-- - - - - - - - - - - - Vs Text - - - - - - - - - - - -->
+            <div class="vs-text">
+              <p ng-show="vm.currentGame.readyToStart">{{ vm.currentGame.player1 }} vs {{ vm.currentGame.player2 }}</p>
+            </div>
+
+            <!-- - - - - - - - - - - - Game board - - - - - - - - - - - -->
+            <div class="board-container">
+              <div class="board">
+                <div class="board-row" ng-repeat="row in vm.currentGame.rows">
+                  <div  class="board-square crossed" 
+                        ng-repeat="square in row" 
+                        ng-click="vm.currentGame.postGame || vm.clickSquare(square)" 
+                        ng-class="{playerOne: vm.currentGame.turn, playerTwo: !vm.currentGame.turn, filled: square.filled, xMark: square.val === 'x', oMark: square.val === 'o', disabled: vm.currentGame.postGame, winner: square.winner }">
+                      {{ square.val }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- - - - - - - - - - - - Win Message - - - - - - - - - - - -->
+            <div class="win-message" ng-show="vm.currentGame.postGame">
+              <p>{{ vm.currentGame.winner }}</p>
+            </div>
+
+            <div class="clear"></div>
+
+          </div>
+        </div>
       </div>
     </div>
-
-    <!-- - - - - - - - - - - - Win Message - - - - - - - - - - - -->
-    <div class="win-message" ng-show="vm.currentGame.postGame">
-      <p>{{ vm.currentGame.winner }}</p>
-    </div>
-
-    <div class="clear"></div>
-
   </div>
-</div>
+
+  <!-- Menu Toggle Script -->
+  <script>
+  console.log("toggling menu");
+  $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+  });
+  </script>
 
 
 </body>
