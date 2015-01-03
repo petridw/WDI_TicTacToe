@@ -51,6 +51,7 @@ function GameController($firebase) {
   vm.messageColor = "black";
   vm.messageColorStyle = {color: vm.messageColor};
   vm.hideChat = false;
+  vm.hideLobbies = false;
 
   //------------------------------------------------------------------
   // Functions available to the View

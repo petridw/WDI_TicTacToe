@@ -1,7 +1,7 @@
 body {
   height: 100%;
   width: 100%;
-  background: #0D47A1;
+  background: white;
   font-size: 12px;
   font-family: 'New York';
 
@@ -49,11 +49,18 @@ input {
   transition: all 0.4s ease 0s;
 }
 
-#wrapper.toggled {
+#wrapper.hide-chat {
   padding-right: 0;
 }
-#wrapper.toggled #right-sidebar-wrapper {
+#wrapper.hide-chat #right-sidebar-wrapper {
   right: 0;
+}
+
+#wrapper.hide-lobbies {
+  padding-left: 0;
+}
+#wrapper.hide-lobbies #left-sidebar-wrapper {
+  left: -500px;
 }
 
 #left-sidebar-wrapper {
@@ -106,108 +113,44 @@ input {
 
 }
 
-
-
-
-
-
-/*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- main content
-- - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-.main {
-  margin: 0 auto;
-  padding: 0;
-  text-align: center;
-  background: white;
+@media (max-width: 600px) {
 
 }
 
-.logo {
-  padding: 10px 0;
-}
-
-
-
-/*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
--  controls / info / setup
-- - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-.controls {
-  border-bottom: 1px solid #DDDDDD;
-  padding: 10px 0;
-}
-
-.controls .team-buttons-container {
-  display: block;
-  width: 100%;
-  text-align: center;
-}
-
-.controls .team-buttons-container button {
-  display: inline-block;
-  width: 44%;
-  margin: 0 auto;
-}
-
-.controls .lobby-buttons-container {
-  display: block;
-  width: 100%;
-  text-align: center;
-}
-
-.controls .lobby-buttons-container button {
-  display: inline-block;
-  width: 44%;
-  margin: 0 auto;
-}
-
-.controls button {
-  box-sizing: border-box;
-  margin: 4px auto;
-  padding: 5px;
-  text-align: left;
-  display: block;
-  width: 90%;
-  border: 0;
-  background: white;
-
-}
-.controls button:hover:not(.disabled) {
-  background: #E26A6A;
-}
-
-.controls .teamButton:hover:not(.disabled) {
-  background: #F39C12;
-}
-
-.controls .disabled {
-  background: #AAAAAA;
-}
-
-.controls .picked-team {
-  background: #F1A9A0;
-}
-
+/*---------------------------------------------------------------------------------------
+- LEFT SIDEBAR
+---------------------------------------------------------------------------------------*/
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
 -  lobbies
 - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 .lobbies {
+  position: relative;
+  height: 100%;
   padding: 10px 0;
 }
 
-.lobbies .lobbies-list-container {
-  height: 100%;
+.lobbies-list-container {
   overflow: auto;
+  position: absolute;
+  top: 62px;
+  bottom: 0;
+  width: 100%;
+}
+
+.lobby-search {
+  border-bottom: 1px solid #666666;
 }
 
 .lobby {
   position: relative;
   margin: 0;
   padding: 0;
-  color: grey;
+  color: #1D2726;
   border-bottom: 1px solid #DDDDDD;
   text-align: center;
   box-sizing: border-box;
 }
+
 .lobby:hover {
   background: #81CFE0;
 }
@@ -251,49 +194,10 @@ input {
   border: 2px solid #EF351F;
 }
 
-/*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
--  game status
-- - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-.game-status {
-  padding: 10px 0;
-}
-.game-status .player-status-container {
-  text-align: center;
-}
-
-.game-status .player-status {
-  display: inline-block;
-  width: 40%;
-  color: white;
-  background: #263333;
-  padding: 5px;
-  margin: 0 5px 0 5px;
-}
-
-.game-status span {
-  display: inline-block;
-  width: 40%;
-  padding: 5px;
-  margin: 0 5px 0 5px;
-}
-
 
 /*---------------------------------------------------------------------------------------
 - RIGHT SIDEBAR
 ---------------------------------------------------------------------------------------*/
-/*.right-sidebar {
-  display: inline-block;
-  float: right;
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  width: 330px;
-  border-left: 1px solid #AAAAAA;
-  background: #EFEFEF;
-  text-align: left;
-
-}*/
-
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
 -  messages
 - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
@@ -385,6 +289,121 @@ input {
 
 .message {
   padding-bottom: 5px;
+}
+
+
+
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- main content
+- - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+.main {
+  margin: 0 auto;
+  padding: 0;
+  text-align: center;
+  background: white;
+  height: 100%;
+
+}
+
+.collapse-buttons-wrapper {
+  padding: 10px 0;
+}
+.collapse-lobbies-wrapper {
+  display: inline-block;
+  float: left;
+}
+.collapse-chat-wrapper {
+  display: inline-block;
+  float: right;
+}
+
+.logo {
+  padding: 10px 0;
+}
+
+
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+-  game status
+- - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+.game-status {
+  padding: 10px 0;
+}
+.game-status .player-status-container {
+  text-align: center;
+}
+
+.game-status .player-status {
+  display: inline-block;
+  width: 40%;
+  color: white;
+  background: #263333;
+  padding: 5px;
+  margin: 0 5px 0 5px;
+}
+
+.game-status span {
+  display: inline-block;
+  width: 40%;
+  padding: 5px;
+  margin: 0 5px 0 5px;
+}
+
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+-  controls / info / setup
+- - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+.controls {
+  padding: 10px 0;
+}
+
+.controls .team-buttons-container {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.controls .team-buttons-container button {
+  display: inline-block;
+  width: 44%;
+  margin: 0 auto;
+}
+
+.controls .lobby-buttons-container {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.controls .lobby-buttons-container button {
+  display: inline-block;
+  width: 44%;
+  margin: 0 auto;
+}
+
+.controls button {
+  box-sizing: border-box;
+  margin: 4px auto;
+  padding: 5px;
+  text-align: left;
+  display: block;
+  width: 90%;
+  border: 0;
+  background: white;
+
+}
+.controls button:hover:not(.disabled) {
+  background: #E26A6A;
+}
+
+.controls .teamButton:hover:not(.disabled) {
+  background: #F39C12;
+}
+
+.controls .disabled {
+  background: #AAAAAA;
+}
+
+.controls .picked-team {
+  background: #F1A9A0;
 }
 
 

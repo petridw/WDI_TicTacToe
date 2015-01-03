@@ -46,7 +46,7 @@
 
   <div class="main" ng-controller="GameController as vm">
 
-    <div id="wrapper" ng-class="{ toggled: vm.hideChat }">
+    <div id="wrapper" ng-class="{ 'hide-chat': vm.hideChat, 'hide-lobbies': vm.hideLobbies }">
 
       <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
       <!-- - - - - - - - - - - - RIGHT SIDEBAR - - - - - - - - - - - -->
@@ -76,10 +76,11 @@
           <div class="message-form-container">
             <form>
               <input class="message-input" type="text" ng-model="vm.newMessage" placeholder="Send a message">
-              <button type="submit" ng-class="{ disabled: ((vm.playerName.length < 1) ||
+              <button type="submit" class="btn btn-default"
+                                    ng-class="{ disabled: ((vm.playerName.length < 1) ||
                                                            (vm.newMessage.length < 1)) }"
                                     ng-click="vm.sendMessage()">
-                Chat
+                <span class="glyphicon glyphicon-comment"></span>
               </button>
             </form>
           </div>
@@ -131,6 +132,27 @@
       <div class="container-fluid">
 
         <div class="row">
+          <div class="col-md-12">
+            <div class="collapse-buttons-wrapper">
+              <div class="collapse-lobbies-wrapper">
+                <a href="#" ng-click="vm.hideLobbies = !vm.hideLobbies">
+                  <span class="glyphicon" ng-class="{ 'glyphicon-chevron-left': !vm.hideLobbies, 'glyphicon-chevron-right': vm.hideLobbies }"></span>
+                 </a>
+              </div>
+              <div class="collapse-chat-wrapper">
+                <a href="#" id="menu-toggle" ng-click="vm.hideChat = !vm.hideChat">
+                  <span class="glyphicon" 
+                        ng-class="{ 'glyphicon-chevron-left': vm.hideChat, 'glyphicon-chevron-right': !vm.hideChat }">
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <span class="clear"></span>
+
+        <div class="row">
           <div class="col-md-12 logo">
             <h1>tic tac toe</h1>
           </div>
@@ -167,7 +189,6 @@
               <button class="resetButton" ng-click="vm.addGame()">New Lobby</button>
               <button class="startGame" ng-click="vm.startGame()">Start game</button>
             </div>
-            <a href="#" class="btn btn-default" id="menu-toggle" ng-click="vm.hideChat = !vm.hideChat">Toggle Chat</a>
           </div>
 
 
