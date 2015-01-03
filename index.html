@@ -46,13 +46,13 @@
 
   <div class="main" ng-controller="GameController as vm">
 
-    <div id="wrapper">
+    <div id="wrapper" ng-class="{ toggled: vm.hideChat }">
 
       <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
       <!-- - - - - - - - - - - - RIGHT SIDEBAR - - - - - - - - - - - -->
       <!-- - - - - - - - - - - - - messages - - - - - - - - - - - - -->
 
-      <div id="sidebar-wrapper">
+      <div id="right-sidebar-wrapper">
 
         <div class="messages">
 
@@ -87,6 +87,42 @@
 
       </div>
 
+      <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+      <!-- - - - - - - - - - - - LEFT SIDEBAR - - - - - - - - - - - -->
+      <!-- - - - - - - - - - - - - Lobbies - - - - - - - - - - - - -->
+      <div id="left-sidebar-wrapper">
+        <div class="lobbies">
+          <h3>Lobbies</h3>
+          <div class="lobby-search">
+            <input type="text" ng-model="vm.lobbySearch" placeholder="Search lobbies...">
+          </div>
+          <div class="lobbies-list-container">
+            <ul>
+              <li ng-repeat="game in vm.games | orderBy:'time':true | filter:vm.lobbySearch | limitTo: 100">
+                <div class="lobby" ng-class="{'current-lobby': game.$id == vm.currentGame.$id}">
+
+                  <a href="#" ng-click="vm.setCurrentGame(game.$id)"><span class="link"></span></a>
+
+                  <div class="lobby-section">
+                    <span class="lobby-info">
+                      {{ (game.player1.length > 0) ? game.player1 : '?' }} vs. {{ (game.player2.length > 0) ? game.player2 : '?' }}
+                    </span>
+                  </div>
+                  <div class="lobby-section">
+                    <span class="lobby-info" ng-show="!game.postGame && !game.gameInProgress">Not started</span>
+                    <span class="lobby-info" ng-show="game.gameInProgress">In progress</span>
+                    <span class="lobby-info" ng-show="game.postGame">{{ game.winner }}</span>
+                  </div>
+                  <div class="lobby-section">
+                    <span class="lobby-info" class="game-time">{{ game.time | date:'short' }}</span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
 
       <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
       <!-- - - - - - - - - - - - main content - - - - - - - - - - - -->
@@ -103,7 +139,7 @@
 
         <!-- - - - - - - - - - - - Controls / Setup - - - - - - - - - - - -->
         <div class="row">
-          <div class="col-md-4 controls">
+          <div class="col-md-6 controls">
             <h3>Setup</h3>
             <input type="text" ng-model="vm.playerName" placeholder="Name...">
             <div class="team-buttons-container">
@@ -131,45 +167,12 @@
               <button class="resetButton" ng-click="vm.addGame()">New Lobby</button>
               <button class="startGame" ng-click="vm.startGame()">Start game</button>
             </div>
-            <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Chat</a>
-          </div>
-
-
-          <!-- - - - - - - - - - - - Lobbies - - - - - - - - - - - -->
-          <div class="col-md-4 lobbies">
-            <h3>Lobbies</h3>
-            <div class="lobby-search">
-              <input type="text" ng-model="vm.lobbySearch" placeholder="Search lobbies...">
-            </div>
-            <div class="lobbies-list-container">
-              <ul>
-                <li ng-repeat="game in vm.games | orderBy:'time':true | filter:vm.lobbySearch | limitTo: 100">
-                  <div class="lobby" ng-class="{'current-lobby': game.$id == vm.currentGame.$id}">
-
-                    <a href="#" ng-click="vm.setCurrentGame(game.$id)"><span class="link"></span></a>
-
-                    <div class="lobby-section">
-                      <span class="lobby-info">
-                        {{ (game.player1.length > 0) ? game.player1 : '?' }} vs. {{ (game.player2.length > 0) ? game.player2 : '?' }}
-                      </span>
-                    </div>
-                    <div class="lobby-section">
-                      <span class="lobby-info" ng-show="!game.postGame && !game.gameInProgress">Not started</span>
-                      <span class="lobby-info" ng-show="game.gameInProgress">In progress</span>
-                      <span class="lobby-info" ng-show="game.postGame">{{ game.winner }}</span>
-                    </div>
-                    <div class="lobby-section">
-                      <span class="lobby-info" class="game-time">{{ game.time | date:'short' }}</span>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
+            <a href="#" class="btn btn-default" id="menu-toggle" ng-click="vm.hideChat = !vm.hideChat">Toggle Chat</a>
           </div>
 
 
           <!-- - - - - - - - - - - - Game info - - - - - - - - - - - -->
-          <div class="col-md-4 game-status">
+          <div class="col-md-6 game-status">
             <h3>Game Info</h3>
             <div class="player-status-container">
               <span>X</span>
@@ -230,15 +233,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Menu Toggle Script -->
-  <script>
-  console.log("toggling menu");
-  $("#menu-toggle").click(function(e) {
-      e.preventDefault();
-      $("#wrapper").toggleClass("toggled");
-  });
-  </script>
 
 
 </body>

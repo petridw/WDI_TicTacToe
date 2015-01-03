@@ -37,8 +37,82 @@ input {
   color: black;
 }
 
+
+
+
+/*---------------------------------------------------------------------------------------
+- sidebars
+---------------------------------------------------------------------------------------*/
+#wrapper {
+  padding-left: 250px;
+  padding-right: 300px;
+  transition: all 0.4s ease 0s;
+}
+
+#wrapper.toggled {
+  padding-right: 0;
+}
+#wrapper.toggled #right-sidebar-wrapper {
+  right: 0;
+}
+
+#left-sidebar-wrapper {
+  margin-left: 250px;
+  left: -250px;
+  width: 250px;
+  position: fixed;
+  height: 100%;
+  overflow-y: auto;
+  z-index: 1000;
+  transition: all 0.4s ease 0s;
+  background: #EFEFEF;
+  text-align: left;
+}
+
+#right-sidebar-wrapper {
+  margin-right: -300px;
+  right: 300px;
+  width: 300px;
+  background: #000;
+  position: fixed;
+  height: 100%;
+  overflow-y: auto;
+  z-index: 1000;
+  transition: all 0.4s ease 0s;
+  background: #EFEFEF;
+  text-align: left;
+}
+
+@media (max-width:815px) {
+
+    #wrapper {
+      padding-right: 0;
+    }
+
+    #right-sidebar-wrapper {
+      right: 0;
+    }
+
+    #wrapper.active {
+      position: relative;
+      right: -300px;
+    }
+
+    #wrapper.active #right-sidebar-wrapper {
+      right: -300px;
+      width: 300px;
+      transition: all 0.4s ease 0s;
+    }
+
+}
+
+
+
+
+
+
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- main
+- main content
 - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 .main {
   margin: 0 auto;
@@ -48,57 +122,18 @@ input {
 
 }
 
-
-/*---------------------------------------------------------------------------------------
-- NAV BAR
----------------------------------------------------------------------------------------*/
-
-
-/*---------------------------------------------------------------------------------------
-- LEFT SIDEBAR
----------------------------------------------------------------------------------------*/
-
-/*.left-sidebar {
-  display: inline-block;
-  margin: 0;
-  padding: 0;
-  width: 300px;
-  height: 100vh;
-  float: left;
-  background: #3A4D5F;
-  color: black;
-  text-align: left;
-  border-right: 1px solid #AAAAAA;
-}*/
-
-.left-sidebar h3 {
-  color: #C1C1C1;
-}
-
-.left-sidebar h2 {
-  color: #C1C1C1;
-}
-
 .logo {
-  border-bottom: 1px solid #DDDDDD;
   padding: 10px 0;
 }
 
+
+
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
--  controls
+-  controls / info / setup
 - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 .controls {
   border-bottom: 1px solid #DDDDDD;
   padding: 10px 0;
-}
-.controls input {
-  box-sizing: border-box;
-  width: 90%;
-  margin: 4px auto;
-  padding: 5px;
-  border: 0;
-  display: block;
-
 }
 
 .controls .team-buttons-container {
@@ -156,12 +191,11 @@ input {
 -  lobbies
 - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 .lobbies {
-  border-bottom: 1px solid #DDDDDD;
   padding: 10px 0;
 }
 
 .lobbies .lobbies-list-container {
-  height: 300px;
+  height: 100%;
   overflow: auto;
 }
 
@@ -169,9 +203,10 @@ input {
   position: relative;
   margin: 0;
   padding: 0;
-  color: white;
+  color: grey;
   border-bottom: 1px solid #DDDDDD;
   text-align: center;
+  box-sizing: border-box;
 }
 .lobby:hover {
   background: #81CFE0;
@@ -187,12 +222,7 @@ input {
 
 .lobbies .lobby-section {
   display: inline;
-  border-right: 1px solid #AAAAAA;
-  padding: 0;a
-}
-.lobbies>.lobby-section:last-of-type {
-  color: brown;
-  border: 0;
+  padding: 0;
 }
 
 .lobby .link {
@@ -217,7 +247,8 @@ input {
 }
 
 .current-lobby {
-  background: #EF351F;
+  /*background: #EF351F;*/
+  border: 2px solid #EF351F;
 }
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -354,60 +385,6 @@ input {
 
 .message {
   padding-bottom: 5px;
-}
-
-
-/*---------------------------------------------------------------------------------------
-- bootstrap
----------------------------------------------------------------------------------------*/
-#wrapper {
-  padding-right: 300px;
-  transition: all 0.4s ease 0s;
-}
-
-#wrapper.toggled {
-  padding-right: 0;
-}
-#wrapper.toggled #sidebar-wrapper {
-  right: 0;
-}
-
-#sidebar-wrapper {
-  margin-right: -300px;
-  right: 300px;
-  width: 300px;
-  background: #000;
-  position: fixed;
-  height: 100%;
-  overflow-y: auto;
-  z-index: 1000;
-  transition: all 0.4s ease 0s;
-  background: #EFEFEF;
-  text-align: left;
-  border-left: 1px solid #AAAAAA;
-}
-
-@media (max-width:815px) {
-
-    #wrapper {
-      padding-right: 0;
-    }
-
-    #sidebar-wrapper {
-      right: 0;
-    }
-
-    #wrapper.active {
-      position: relative;
-      right: -300px;
-    }
-
-    #wrapper.active #sidebar-wrapper {
-      right: -300px;
-      width: 300px;
-      transition: all 0.4s ease 0s;
-    }
-
 }
 
 
