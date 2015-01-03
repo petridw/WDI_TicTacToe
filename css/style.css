@@ -3,7 +3,6 @@ body {
   width: 100%;
   background: #0D47A1;
   font-size: 12px;
-  background: black;
   font-family: 'New York';
 
 }
@@ -61,7 +60,7 @@ input {
 - LEFT SIDEBAR
 ---------------------------------------------------------------------------------------*/
 
-.left-sidebar {
+/*.left-sidebar {
   display: inline-block;
   margin: 0;
   padding: 0;
@@ -72,7 +71,7 @@ input {
   color: black;
   text-align: left;
   border-right: 1px solid #AAAAAA;
-}
+}*/
 
 .left-sidebar h3 {
   color: #C1C1C1;
@@ -253,7 +252,7 @@ input {
 /*---------------------------------------------------------------------------------------
 - RIGHT SIDEBAR
 ---------------------------------------------------------------------------------------*/
-.right-sidebar {
+/*.right-sidebar {
   display: inline-block;
   float: right;
   margin: 0;
@@ -264,7 +263,7 @@ input {
   background: #EFEFEF;
   text-align: left;
 
-}
+}*/
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
 -  messages
@@ -360,6 +359,82 @@ input {
 }
 
 
+/*---------------------------------------------------------------------------------------
+- bootstrap
+---------------------------------------------------------------------------------------*/
+#wrapper {
+  padding-left: 250px;
+  transition: all 0.4s ease 0s;
+}
+
+.left-sidebar-wrapper {
+  left: 0px;
+  width: 250px;
+  background: #000;
+  position: fixed;
+  height: 100%;
+  overflow-y: auto;
+  z-index: 1000;
+  transition: all 0.4s ease 0s;
+  background: #3A4D5F;
+  color: black;
+  text-align: left;
+  border-right: 1px solid #AAAAAA;
+}
+
+.right-sidebar-wrapper {
+  right: 0px;
+  width: 300px;
+  background: #000;
+  position: fixed;
+  height: 100%;
+  overflow-y: auto;
+  z-index: 1000;
+  transition: all 0.4s ease 0s;
+  border-left: 1px solid #AAAAAA;
+  background: #EFEFEF;
+  text-align: left;
+}
+
+#page-content-wrapper {
+  width: 100%;
+}
+
+.sidebar-nav {
+  position: absolute;
+  top: 0;
+  width: 250px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width:815px) {
+
+    #wrapper {
+      padding-left: 0;
+    }
+
+    .left-sidebar-wrapper {
+      left: -250px;
+    }
+
+    .right-sidebar-wrapper {
+      display: none;
+    }
+
+    #wrapper.active {
+      position: relative;
+      left: 250px;
+    }
+
+    #wrapper.active #sidebar-wrapper {
+      left: 250px;
+      width: 250px;
+      transition: all 0.4s ease 0s;
+    }
+
+}
 
 
 /*---------------------------------------------------------------------------------------
@@ -409,12 +484,15 @@ input {
 -  game board
 - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 
-.board-container {
+/*.board-container {
   display: inline-block;
   height: 300px;
   width: 400px;
   margin: 15px 0 15px 0;
 
+}*/
+.board-container {
+  width: 100%;
 }
 
 .board {
@@ -427,7 +505,7 @@ input {
 
 }
 
-.row {
+.board-row {
   clear: both;
   display: block;
 }
@@ -435,7 +513,7 @@ input {
   margin-left: 0;
 }
 
-.square {
+.board-square {
   height: 50px;
   width: 50px;
   background: white;
@@ -448,33 +526,33 @@ input {
   box-sizing: border-box;
 }
 
-.row>.square:last-of-type {
+.board-row>.board-square:last-of-type {
   margin-right: 0;
 }
 
-.row:first-of-type>.square {
+.board-row:first-of-type>.board-square {
   margin-top: 0;
 }
 
-.square.filled.xMark {
+.board-square.filled.xMark {
   color: #FF5D3D;
 }
 
-.square.filled.oMark {
+.board-square.filled.oMark {
   color: #4A67FF;
 }
 
-.square.playerOne:hover:not(.disabled) {
+.board-square.playerOne:hover:not(.disabled) {
   border: 2px solid #FF5D3D;
 }
-.square.playerOne.filled:hover {
+.board-square.playerOne.filled:hover {
   border: none;
 }
 
-.square.playerTwo:hover:not(.disabled) {
+.board-square.playerTwo:hover:not(.disabled) {
   border: 2px solid #4A67FF;
 }
-.square.playerTwo.filled:hover {
+.board-square.playerTwo.filled:hover {
   border: none;
 }
 

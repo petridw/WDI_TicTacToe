@@ -1,46 +1,57 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <!-- fonts -->
-  <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-  <link href='https://fonts.googleapis.com/css?family=Nunito' rel='stylesheet' type='text/css'>
+<html lang="en">
+  <head>
 
-  <!-- firebase and angular -->
-  <script src='https://cdn.firebase.com/js/client/2.0.4/firebase.js'></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script>
-<!--   <script src="js/angular.js"></script>
-  <script src="js/firebase.js"></script> -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-  <!--angular fire (must be last) -->
-  <script src="https://cdn.firebase.com/libs/angularfire/0.9.0/angularfire.min.js"></script>
-  
-  <!-- my stylesheets -->
-  <link rel="stylesheet" type="text/css" href="css/normalize.css">
-  <link rel="stylesheet" type="text/css" href="css/style.css">
-  <link rel="stylesheet" type="text/css" href="css/animations.css">
+    <!-- fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Nunito' rel='stylesheet' type='text/css'>
 
-<!--   <script src="js/app.js"></script>-->
-  <script src="js/GameController.js"></script>
+    <!-- firebase and angular -->
+    <script src='https://cdn.firebase.com/js/client/2.0.4/firebase.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script>
 
-  <title>tic tac whaaat</title>
-</head>
+    <!--angular fire (must be last) -->
+    <script src="https://cdn.firebase.com/libs/angularfire/0.9.0/angularfire.min.js"></script>
+
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+    
+    <!-- my stylesheets -->
+    <link rel="stylesheet" type="text/css" href="css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/animations.css">
+
+  <!--   <script src="js/app.js"></script>-->
+    <script src="js/GameController.js"></script>
+
+    <title>tic tac whaaat</title>
+  </head>
+
+
 <body ng-app="ticTacToeApp">
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
 
   <div class="main" ng-controller="GameController as vm">
-
-
-
-  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-  <!-- - - - - - - - - - - - - - NAV BAR - - - - - - - - - - - - - -->
-  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
 
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
   <!-- - - - - - - - - - - - LEFT SIDEBAR - - - - - - - - - - - -->
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <div class="left-sidebar">
+  <div class="left-sidebar-wrapper">
 
 
     <!-- - - - - - - - - - - - Logo / title - - - - - - - - - - - -->
@@ -108,28 +119,9 @@
                 <span class="lobby-info" class="game-time">{{ game.time | date:'short' }}</span>
               </div>
             </div>
-<!--               <table>
-               <tr>
-                <td>
-                  {{ (game.player1.length > 0) ? game.player1 : '?' }} vs. {{ (game.player2.length > 0) ? game.player2 : '?' }}
-                </td>
-                <td>
-                  <span class="lobby-info" ng-show="!game.postGame && !game.gameInProgress">Not started</span>
-                  <span class="lobby-info" ng-show="game.gameInProgress">In progress</span>
-                  <span class="lobby-info" ng-show="game.postGame">{{ game.winner }}</span>
-                </td>
-                <td>
-                  <span class="lobby-info" class="game-time">{{ game.time | date:'short' }}</span>
-                </td>
-               <tr> 
-              </table> -->
           </li>
         </ul>
       </div>
-<!--       <div class="lobby-nav-buttons">
-        <button class="lobby-nav-button arrow-back"><-</button>
-        <button class="lobby-nav-button arrow-forward">-></button>
-      </div> -->
     </div>
 
 
@@ -157,41 +149,41 @@
   <!-- - - - - - - - - - - - RIGHT SIDEBAR - - - - - - - - - - - -->
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-    <div class="right-sidebar">
+  <div class="right-sidebar-wrapper">
 
-      <!-- - - - - - - - - - - - Messages - - - - - - - - - - - -->
-      <div class="messages">
+    <!-- - - - - - - - - - - - Messages - - - - - - - - - - - -->
+    <div class="messages">
 
-        <div class="message-header-container">
-          <div class="message-color-picker-container">
-            <input type="color" class="message-color-picker" value="#FF4242" ng-model="vm.messageColor" ng-change="vm.setMessageColor()">
-          </div>
-          <p class="message-player-hello">Hello, <span ng-show="vm.playerName !== ''">{{vm.playerName}}!</span></p>
+      <div class="message-header-container">
+        <div class="message-color-picker-container">
+          <input type="color" class="message-color-picker" value="#FF4242" ng-model="vm.messageColor" ng-change="vm.setMessageColor()">
         </div>
-
-        <div class="message-list-container">
-
-          <p class="chat-welcome" ng-show="(vm.currentGame.messages.length === 0)">Welcome to the chat...</p>
-          <ul class="message-list" ng-show="(vm.currentGame.messages.length > 0)" >
-            <li class="message" ng-repeat="message in vm.currentGame.messages">
-              <span ng-show="message.content.length > 0"><span class="message-name" ng-style="{color: vm.messageColor}">{{ message.name }}</span>: {{ message.content }}</span>
-            </li>
-          </ul>
-        </div>
-
-        <div class="message-form-container">
-          <form>
-            <input class="message-input" type="text" ng-model="vm.newMessage" placeholder="Send a message">
-            <button type="submit" ng-class="{ disabled: ((vm.playerName.length < 1) ||
-                                                         (vm.newMessage.length < 1)) }"
-                                  ng-click="vm.sendMessage()">
-              Chat
-            </button>
-          </form>
-        </div>
+        <p class="message-player-hello">Hello, <span ng-show="vm.playerName !== ''">{{vm.playerName}}!</span></p>
       </div>
 
+      <div class="message-list-container">
+
+        <p class="chat-welcome" ng-show="(vm.currentGame.messages.length === 0)">Welcome to the chat...</p>
+        <ul class="message-list" ng-show="(vm.currentGame.messages.length > 0)" >
+          <li class="message" ng-repeat="message in vm.currentGame.messages">
+            <span ng-show="message.content.length > 0"><span class="message-name" ng-style="{color: vm.messageColor}">{{ message.name }}</span>: {{ message.content }}</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="message-form-container">
+        <form>
+          <input class="message-input" type="text" ng-model="vm.newMessage" placeholder="Send a message">
+          <button type="submit" ng-class="{ disabled: ((vm.playerName.length < 1) ||
+                                                       (vm.newMessage.length < 1)) }"
+                                ng-click="vm.sendMessage()">
+            Chat
+          </button>
+        </form>
+      </div>
     </div>
+
+  </div>
 
 
 
@@ -207,14 +199,18 @@
     </div>
 
     <!-- - - - - - - - - - - - Game board - - - - - - - - - - - -->
-    <div class="board-container">
-      <div class="board">
-        <div class="row" ng-repeat="row in vm.currentGame.rows">
-          <div  class="square crossed" 
-                ng-repeat="square in row" 
-                ng-click="vm.currentGame.postGame || vm.clickSquare(square)" 
-                ng-class="{playerOne: vm.currentGame.turn, playerTwo: !vm.currentGame.turn, filled: square.filled, xMark: square.val === 'x', oMark: square.val === 'o', disabled: vm.currentGame.postGame, winner: square.winner }">
-              {{ square.val }}
+    <div class="board-container container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="board">
+            <div class="board-row" ng-repeat="row in vm.currentGame.rows">
+              <div  class="board-square crossed" 
+                    ng-repeat="square in row" 
+                    ng-click="vm.currentGame.postGame || vm.clickSquare(square)" 
+                    ng-class="{playerOne: vm.currentGame.turn, playerTwo: !vm.currentGame.turn, filled: square.filled, xMark: square.val === 'x', oMark: square.val === 'o', disabled: vm.currentGame.postGame, winner: square.winner }">
+                  {{ square.val }}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -228,9 +224,7 @@
     <div class="clear"></div>
 
   </div>
-
-
-
+</div>
 
 
 </body>

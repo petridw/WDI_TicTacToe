@@ -16,12 +16,12 @@
   }
 }
 
-.square {
+.board-square {
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
   box-shadow: 0 0 1px rgba(0, 0, 0, 0);
 }
-.square:hover:not(.disabled):not(.filled), .square:focus:not(.disabled):not(.filled), .square:active:not(.disabled):not(.filled) {
+.board-square:hover:not(.disabled):not(.filled), .board-square:focus:not(.disabled):not(.filled), .board-square:active:not(.disabled):not(.filled) {
   -webkit-animation-name: pulse-grow;
   animation-name: pulse-grow;
   -webkit-animation-duration: 0.3s;
@@ -62,14 +62,14 @@
   }
 }
 
-.square.filled {
+.board-square.filled {
   display: inline-block;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
   box-shadow: 0 0 1px rgba(0, 0, 0, 0);
 }
 
-.square.filled:hover:not(.disabled), .square.filled:focus:not(.disabled), .square.filled:active:not(.disabled) {
+.board-square.filled:hover:not(.disabled), .board-square.filled:focus:not(.disabled), .board-square.filled:active:not(.disabled) {
   -webkit-animation-name: buzz;
   animation-name: buzz;
   -webkit-animation-duration: 0.30s;
