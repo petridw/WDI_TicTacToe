@@ -31,7 +31,7 @@ h3 {
   text-align: center;
 }
 h4 {
-
+  font:700 12px 'New York';
 }
 
 
@@ -294,7 +294,6 @@ input {
 .messages .message-input {
   box-sizing: border-box;
   margin: 4px auto;
-  border: 0;  
   display: inline-block;
   color: black;
   width: 80%;
@@ -349,39 +348,51 @@ input {
 -  game info
 - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 .game-status {
-  padding: 0 15px;
+  padding: 15px;
 }
 
 .game-status .player-status-container {
   padding: 0;
-  text-align: left;
+  text-align: center;
+  margin-bottom: 5px;
+}
 
+.game-status h4 {
+  margin-bottom: 3px;
 }
 
 .info-x {
   font: bold 30px/30px 'Architects Daughter', serif;
   color: #FF5D3D;
+  padding: 0;
 }
 
 .info-o {
   font: bold 30px/30px 'Architects Daughter', serif;
   color: #4A67FF;
+  padding: 0;
 }
 
 .info-x-name {
-  font-size: 20px;
+  font: bold 24px/24px 'Architects Daughter', serif;
+  color: #FF5D3D;
+  padding: 0;
 }
 
 .info-o-name {
-  font-size: 20px;
+  font: bold 24px/24px 'Architects Daughter', serif;
+  color: #4A67FF;
+  padding: 0;
 }
 
-.turn-status-container {
+.info-messages-container {
   width: 100%;
+  text-align: left;
 }
 
-.turn-status-container p {
-  font-size: 20px;
+.info-messages-container p {
+  font-size: 16px;
+  margin: 1px 0;
 }
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - -

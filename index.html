@@ -231,14 +231,15 @@
           <!-- - - - - - - - - - - - Game info - - - - - - - - - - - -->
           <div class="col-md-6 game-status">
             <h3>Info</h3>
+            <label>Players</label>
             <div class="player-status-container">
-              <h4>Players</h4>
               <ul>
-                <li><span class="info-x">X:</span>  <span class="info-x-name">{{ vm.currentGame.player1 }}</span></li>
-                <li><span class="info-o">O:</span>  <span class="info-o-name">{{ vm.currentGame.player2 }}</span></li>
+                <li><span class="info-x">X:</span>  <span class="info-x-name">{{ vm.currentGame.player1 | limitTo:13 }}</span></li>
+                <li><span class="info-o">O:</span>  <span class="info-o-name">{{ vm.currentGame.player2 | limitTo:13 }}</span></li>
               </ul>
             </div>
-            <div class="turn-status-container">
+            <label>Notifications</label>
+            <div class="info-messages-container">
               <p ng-show="vm.currentGame.readyToStart">Ready to start!</p>
               <p ng-show="vm.currentGame.gameInProgress && vm.currentGame.turn">{{vm.currentGame.player1}}'s turn!</p>
               <p ng-show="vm.currentGame.gameInProgress && !vm.currentGame.turn">{{vm.currentGame.player2}}'s turn!</p>
