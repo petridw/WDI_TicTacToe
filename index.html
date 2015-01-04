@@ -55,10 +55,11 @@
       <div id="right-sidebar-wrapper">
 
         <div class="messages">
-          <div class="message-color-picker-container">
+<!--           <div class="message-color-picker-container">
             <input type="color" class="message-color-picker" value="#FF4242" ng-model="vm.messageColor" ng-change="vm.setMessageColor()">
-          </div>
+          </div> -->
           <div class="message-header-container">
+            <p ng-show="vm.playerName === ''">Welcome to the chat! Before you can chat or play, you need to enter your name in the Setup section</p>
             <h3 ng-show="vm.playerName !== ''" class="message-player-hello">Hello, {{vm.playerName}}!</h3>
           </div>
 
@@ -157,41 +158,6 @@
           </div>
         </div>
 
-        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-        <!-- - - - - - - - - - - - GAME AREA - - - - - - - - - - - -->
-        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
-        <div class="row">
-          <div class="col-md-12 game-area-container">
-
-            <!-- - - - - - - - - - - - Game board - - - - - - - - - - - -->
-            <div class="board-container">
-              <div class="board">
-                <div class="board-row" ng-repeat="row in vm.currentGame.rows">
-                  <div  class="board-square crossed" 
-                        ng-repeat="square in row" 
-                        ng-click="vm.currentGame.postGame || vm.clickSquare(square)" 
-                        ng-class="{playerOne: vm.currentGame.turn, playerTwo: !vm.currentGame.turn, filled: square.filled, xMark: square.val === 'x', oMark: square.val === 'o', disabled: vm.currentGame.postGame, winner: square.winner }">
-                      {{ square.val }}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- - - - - - - - - - - - Win Message - - - - - - - - - - - -->
-        <div class="row">
-          <div class="col-md-12">
-            <div class="win-message" ng-show="vm.currentGame.postGame">
-              <p>{{ vm.currentGame.winner }}</p>
-            </div>
-
-            <div class="clear"></div>
-          </div>
-        </div>
-
         <!-- - - - - - - - - - - - Controls / Setup - - - - - - - - - - - -->
         <div class="row">
           <div class="col-md-6 controls">
@@ -247,7 +213,40 @@
           </div>
         </div>
 
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+        <!-- - - - - - - - - - - - GAME AREA - - - - - - - - - - - -->
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
+        <div class="row">
+          <div class="col-md-12 game-area-container">
+
+            <!-- - - - - - - - - - - - Game board - - - - - - - - - - - -->
+            <div class="board-container">
+              <div class="board">
+                <div class="board-row" ng-repeat="row in vm.currentGame.rows">
+                  <div  class="board-square crossed" 
+                        ng-repeat="square in row" 
+                        ng-click="vm.currentGame.postGame || vm.clickSquare(square)" 
+                        ng-class="{playerOne: vm.currentGame.turn, playerTwo: !vm.currentGame.turn, filled: square.filled, xMark: square.val === 'x', oMark: square.val === 'o', disabled: vm.currentGame.postGame, winner: square.winner }">
+                      {{ square.val }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- - - - - - - - - - - - Win Message - - - - - - - - - - - -->
+        <div class="row">
+          <div class="col-md-12">
+            <div class="win-message" ng-show="vm.currentGame.postGame">
+              <p>{{ vm.currentGame.winner }}</p>
+            </div>
+
+            <div class="clear"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
