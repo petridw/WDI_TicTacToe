@@ -3,7 +3,7 @@ body {
   width: 100%;
   background: white;
   font-size: 12px;
-  font-family: 'New York';
+  font-family: 'New York', sans-serif;
 
 }
 ul {
@@ -12,11 +12,8 @@ ul {
   margin: 0;
 }
 
-h3 {
-  padding: 0;
-  margin: 0;
-  text-align: center;
-  font-size: 14px;
+h1 {
+  font: 46px Nunito, sans-serif;
 }
 
 h2 {
@@ -27,12 +24,22 @@ h2 {
   font-family: Chicago;
 }
 
+h3 {
+  font: 28px Nunito, sans-serif;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+h4 {
+
+}
+
+
 input {
   box-sizing: border-box;
   width: 90%;
   margin: 4px auto;
   padding: 5px;
-  border: 0;  
   display: block;
   color: black;
 }
@@ -90,7 +97,7 @@ input {
   text-align: left;
 }
 
-@media (max-width:815px) {
+@media (max-width:850px) {
 
     #wrapper {
       padding-right: 0;
@@ -113,8 +120,25 @@ input {
 
 }
 
-@media (max-width: 600px) {
+@media (max-width: 580px) {
+  #wrapper {
+    padding-left: 0;
+  }
 
+  #left-sidebar-wrapper {
+    left: -500px;
+  }
+
+  #wrapper.active {
+    position: relative;
+    left: -300px;
+  }
+
+  #wrapper.active #left-sidebar-wrapper {
+    left: -500px;
+    width: 250px;
+    transition: all 0.4s ease 0s;
+  }
 }
 
 /*---------------------------------------------------------------------------------------
@@ -132,7 +156,7 @@ input {
 .lobbies-list-container {
   overflow: auto;
   position: absolute;
-  top: 62px;
+  top: 85px;
   bottom: 0;
   width: 100%;
 }
@@ -207,7 +231,7 @@ input {
 }
 
 .messages .message-color-picker-container {
-  display: inline-block;
+  display: inline;
 }
 
 .messages .message-color-picker {
@@ -215,7 +239,7 @@ input {
   height: 20px;
   padding: 0;
   margin: 0;
-  border: 1px solid #666666;
+  
 }
 
 .message-player-hello {
@@ -234,7 +258,6 @@ input {
   width: 100%;
   top: 0;
   text-align: center;
-  border-bottom: 1px solid #666666;
 }
 
 .message-header p {
@@ -245,7 +268,7 @@ input {
 .message-list-container {
   position: absolute;
   box-sizing: border-box;
-  bottom: 80px;
+  bottom: 45px;
   top: 33px;
   overflow: auto;
   width: 100%;
@@ -323,111 +346,42 @@ input {
 
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
--  game status
+-  game info
 - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 .game-status {
-  padding: 10px 0;
+  padding: 0 15px;
 }
+
 .game-status .player-status-container {
-  text-align: center;
-}
-
-.game-status .player-status {
-  display: inline-block;
-  width: 40%;
-  color: white;
-  background: #263333;
-  padding: 5px;
-  margin: 0 5px 0 5px;
-}
-
-.game-status span {
-  display: inline-block;
-  width: 40%;
-  padding: 5px;
-  margin: 0 5px 0 5px;
-}
-
-/*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
--  controls / info / setup
-- - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-.controls {
-  padding: 10px 0;
-}
-
-.controls .team-buttons-container {
-  display: block;
-  width: 100%;
-  text-align: center;
-}
-
-.controls .team-buttons-container button {
-  display: inline-block;
-  width: 44%;
-  margin: 0 auto;
-}
-
-.controls .lobby-buttons-container {
-  display: block;
-  width: 100%;
-  text-align: center;
-}
-
-.controls .lobby-buttons-container button {
-  display: inline-block;
-  width: 44%;
-  margin: 0 auto;
-}
-
-.controls button {
-  box-sizing: border-box;
-  margin: 4px auto;
-  padding: 5px;
-  text-align: left;
-  display: block;
-  width: 90%;
-  border: 0;
-  background: white;
-
-}
-.controls button:hover:not(.disabled) {
-  background: #E26A6A;
-}
-
-.controls .teamButton:hover:not(.disabled) {
-  background: #F39C12;
-}
-
-.controls .disabled {
-  background: #AAAAAA;
-}
-
-.controls .picked-team {
-  background: #F1A9A0;
-}
-
-
-/*---------------------------------------------------------------------------------------
-- GAME AREA
----------------------------------------------------------------------------------------*/
-
-/*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
--  Vs text
-- - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-.vs-text {
-  display: inline-block;
-  color: white;
-  width: 400px;
-  text-align: center;
-  color: black;
-  font-size: 20px;
-  padding: 10px;
-}
-.vs-text p {
-  display: inline-block;
   padding: 0;
-  margin: 0;
+  text-align: left;
 
+}
+
+.info-x {
+  font: bold 30px/30px 'Architects Daughter', serif;
+  color: #FF5D3D;
+}
+
+.info-o {
+  font: bold 30px/30px 'Architects Daughter', serif;
+  color: #4A67FF;
+}
+
+.info-x-name {
+  font-size: 20px;
+}
+
+.info-o-name {
+  font-size: 20px;
+}
+
+.turn-status-container {
+  width: 100%;
+}
+
+.turn-status-container p {
+  font-size: 20px;
 }
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -446,6 +400,59 @@ input {
 }
 
 
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+-  controls / setup
+- - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+.controls {
+  padding: 10px 0;
+}
+
+.controls .team-buttons-container {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.controls .team-buttons-container button {
+  display: inline-block;
+  width: 44%;
+  margin: 0 auto;
+}
+
+.leave-team {
+}
+
+.controls .lobby-buttons-container {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.controls .lobby-buttons-container button {
+  display: inline-block;
+  width: 44%;
+  margin: 0 auto;
+}
+
+/*.controls button:hover:not(.disabled) {
+  background: #E26A6A;
+}
+
+.controls .teamButton:hover:not(.disabled) {
+  background: #F39C12;
+}*/
+
+.controls .disabled {
+  background: #AAAAAA;
+}
+
+.controls .picked-team {
+  background: #F1A9A0;
+}
+
+
 /*---------------------------------------------------------------------------------------
 - GAME BOARD
 ---------------------------------------------------------------------------------------*/
@@ -454,13 +461,6 @@ input {
 -  game board
 - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 
-/*.board-container {
-  display: inline-block;
-  height: 300px;
-  width: 400px;
-  margin: 15px 0 15px 0;
-
-}*/
 .board-container {
   width: 100%;
 }
@@ -490,7 +490,7 @@ input {
   margin: 3px 3px 0 0;
   float: left;
 
-  font: bold 40px/40px 'Architects Daughter', cursive;
+  font: bold 40px/40px 'Architects Daughter', serif;
   text-align: center;
 
   box-sizing: border-box;

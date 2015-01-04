@@ -289,6 +289,7 @@ function GameController($firebase) {
     console.log("ready to start: " + vm.currentGame.readyToStart);
     if (vm.currentGame.readyToStart) {
       vm.currentGame.gameInProgress = true;
+      vm.currentGame.readyToStart = false;
     }
 
     saveCurrentGame();
@@ -399,7 +400,5 @@ function GameController($firebase) {
     return false;
   }
 }
-
-
 
 
