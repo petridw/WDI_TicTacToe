@@ -17,16 +17,15 @@ h1 {
 }
 
 h2 {
-  padding: 0;
+  padding: 15px;
   margin: 0;
   text-align: center;
-  font-size: 18px;
-  font-family: Chicago;
+  font: 28px Nunito, sans-serif;
 }
 
 h3 {
-  font: 28px Nunito, sans-serif;
-  padding: 0;
+  font: 20px Nunito, sans-serif;
+  padding: 15px;
   margin: 0;
   text-align: center;
 }
@@ -80,7 +79,6 @@ input {
   z-index: 1000;
   transition: all 0.4s ease 0s;
   background: #EFEFEF;
-  text-align: left;
 }
 
 #right-sidebar-wrapper {
@@ -142,41 +140,57 @@ input {
 }
 
 /*---------------------------------------------------------------------------------------
-- LEFT SIDEBAR
+- left sidebar
 ---------------------------------------------------------------------------------------*/
+
+
+.sidebar-title {
+  border-bottom: 1px solid #666666;
+}
+
+
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
 -  lobbies
 - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-.lobbies {
-  position: relative;
-  height: 100%;
-  padding: 10px 0;
-}
 
 .lobbies-list-container {
   overflow: auto;
   position: absolute;
-  top: 85px;
+  top: 205px;
   bottom: 0;
   width: 100%;
 }
 
 .lobby-search {
-  border-bottom: 1px solid #666666;
 }
 
 .lobby {
   position: relative;
   margin: 0;
-  padding: 0;
+  padding: 5px;
   color: #1D2726;
-  border-bottom: 1px solid #DDDDDD;
+  border-bottom: 1px solid #BBBBBB;
   text-align: center;
   box-sizing: border-box;
 }
+.lobby table {
+  width: 100%;
+}
 
 .lobby:hover {
-  background: #81CFE0;
+  background: #BABAFF;
+}
+
+.lobby-line-1 {
+  display: inline-block;
+}
+
+.lobby-player-names {
+  text-align: left;
+}
+
+.lobby-timestamp {
+  text-align: right;
 }
 
 .lobbies .lobby-info {
@@ -185,6 +199,7 @@ input {
   margin: 0 2px 0 2px;
   width: 30%;
   text-align: left;
+
 }
 
 .lobbies .lobby-section {
@@ -214,13 +229,12 @@ input {
 }
 
 .current-lobby {
-  /*background: #EF351F;*/
-  border: 2px solid #EF351F;
+  background: #BABAFF;
 }
 
 
 /*---------------------------------------------------------------------------------------
-- RIGHT SIDEBAR
+- right sidebar
 ---------------------------------------------------------------------------------------*/
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
 -  messages
@@ -313,6 +327,13 @@ input {
   padding-bottom: 5px;
 }
 
+.message-x {
+  color: #FF5D3D;
+}
+
+.message-o {
+  color: #4A67FF;
+}
 
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -345,76 +366,10 @@ input {
 
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
--  game info
-- - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-.game-status {
-  padding: 15px;
-}
-
-.game-status .player-status-container {
-  padding: 0;
-  text-align: center;
-  margin-bottom: 5px;
-}
-
-.game-status h4 {
-  margin-bottom: 3px;
-}
-
-.info-x {
-  font: bold 30px/30px 'Architects Daughter', serif;
-  color: #FF5D3D;
-  padding: 0;
-}
-
-.info-o {
-  font: bold 30px/30px 'Architects Daughter', serif;
-  color: #4A67FF;
-  padding: 0;
-}
-
-.info-x-name {
-  font: bold 24px/24px 'Architects Daughter', serif;
-  color: #FF5D3D;
-  padding: 0;
-}
-
-.info-o-name {
-  font: bold 24px/24px 'Architects Daughter', serif;
-  color: #4A67FF;
-  padding: 0;
-}
-
-.info-messages-container {
-  width: 100%;
-  text-align: left;
-}
-
-.info-messages-container p {
-  font-size: 16px;
-  margin: 1px 0;
-}
-
-/*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
--  win message
-- - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-.win-message {
-  color: black;
-  font-size: 20px;
-  text-align: center;
-}
-.win-message p {
-  display: inline-block;
-  padding: 5px 10px;
-  margin: 0;
-  
-}
-
-
-/*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
 -  controls / setup
 - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 .controls {
+  text-align: center;
   padding: 10px 0;
 }
 
@@ -441,19 +396,15 @@ input {
   margin-bottom: 10px;
 }
 
+.lobby-buttons-container button {
+  display: inline;
+}
+
 .controls .lobby-buttons-container button {
   display: inline-block;
   width: 44%;
   margin: 0 auto;
 }
-
-/*.controls button:hover:not(.disabled) {
-  background: #E26A6A;
-}
-
-.controls .teamButton:hover:not(.disabled) {
-  background: #F39C12;
-}*/
 
 .controls .disabled {
   background: #AAAAAA;
@@ -461,6 +412,74 @@ input {
 
 .controls .picked-team {
   background: #F1A9A0;
+}
+
+
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+-  game info
+- - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+.game-status {
+  padding: 15px;
+}
+
+.game-status .player-status-container {
+  padding: 0;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.game-status h4 {
+  margin-bottom: 3px;
+}
+
+.info-teams .info-x {
+  font: bold 22px/22px 'Architects Daughter', serif;
+  color: #FF5D3D;
+}
+.info-teams .info-o {
+  font: bold 22px/22px 'Architects Daughter', serif;
+  color: #4A67FF;
+}
+
+
+.info-messages-container {
+  width: 100%;
+}
+
+.info-messages-container p {
+  font-size: 16px;
+  margin: 1px 0;
+}
+
+.team-button {
+  background: none;
+  border: 0;
+  border-radius: 4px;
+  padding: 5px;
+  margin: 0;
+}
+
+.team-button:hover {
+  background: #48B843;
+}
+
+.team-button.disabled:hover {
+  background: #DDDDDD
+}
+
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+-  win message
+- - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+.win-message {
+  color: black;
+  font-size: 20px;
+  text-align: center;
+}
+.win-message p {
+  display: inline-block;
+  padding: 5px 10px;
+  margin: 0;
+  
 }
 
 
@@ -474,6 +493,7 @@ input {
 
 .board-container {
   width: 100%;
+  padding: 30px;
 }
 
 .board {
@@ -482,7 +502,7 @@ input {
   margin: 20px auto;
 
   background: grey;
-  padding-bottom: 0;
+  padding: 0;
 
 }
 

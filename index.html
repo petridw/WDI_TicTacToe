@@ -59,8 +59,10 @@
             <input type="color" class="message-color-picker" value="#FF4242" ng-model="vm.messageColor" ng-change="vm.setMessageColor()">
           </div> -->
           <div class="message-header-container">
-            <p ng-show="vm.playerName === ''">Welcome to the chat! Before you can chat or play, you need to enter your name in the Setup section</p>
-            <h3 ng-show="vm.playerName !== ''" class="message-player-hello">Hello, {{vm.playerName}}!</h3>
+            <p ng-show="vm.playerName === ''">Welcome to the chat! Before you start, you need to enter your name in the Setup section</p>
+            <h3 ng-show="vm.playerName !== ''" class="message-player-hello">
+              Hello, {{vm.playerName | limitTo: 20}}{{vm.playerName.length > 20 ? "..." : ""}}!
+            </h3>
           </div>
 
           <div class="message-list-container">
@@ -68,7 +70,12 @@
             <p class="chat-welcome" ng-show="(vm.currentGame.messages.length === 0)">Welcome to the chat...</p>
             <ul class="message-list" ng-show="(vm.currentGame.messages.length > 0)" >
               <li class="message" ng-repeat="message in vm.currentGame.messages">
-                <span ng-show="message.content.length > 0"><span class="message-name" ng-style="{color: vm.messageColor}">{{ message.name }}</span>: {{ message.content }}</span>
+                <span ng-show="message.content.length > 0">
+                  <span class="message-name" ng-class="{ 'message-x': (message.name === vm.currentGame.player1),
+                                                         'message-o': (message.name === vm.currentGame.player2) }">
+                    {{message.name}}:
+                  </span>{{ message.content }}
+                </span>
               </li>
             </ul>
           </div>
@@ -90,12 +97,24 @@
 
       <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
       <!-- - - - - - - - - - - - LEFT SIDEBAR - - - - - - - - - - - -->
-      <!-- - - - - - - - - - - - - Lobbies - - - - - - - - - - - - -->
+      <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
       <div id="left-sidebar-wrapper">
+
+        <div class="sidebar-title">
+          <h2>tic tac toe</h2>
+        </div>
+
         <div class="lobbies">
-          <h3>Lobbies</h3>
+
+          <h3>recent games</h3>
+
+          <div class="form-group lobby-buttons-container">
+            <button class="btn btn-default" ng-click="vm.addGame()">New Game</button>
+          </div>
+
           <div class="lobby-search">
-            <input type="text" ng-model="vm.lobbySearch" placeholder="Search lobbies...">
+            <input type="text" ng-model="vm.lobbySearch" placeholder="Search games by player name">
           </div>
           <div class="lobbies-list-container">
             <ul>
@@ -104,7 +123,30 @@
 
                   <a href="#" ng-click="vm.setCurrentGame(game.$id)"><span class="link"></span></a>
 
-                  <div class="lobby-section">
+
+                  <table>
+                    <tr>
+                      <td class="lobby-player-names">
+                        <span>
+                          {{ (game.player1.length > 0) ? (game.player1 | limitTo:9) : '?' }}{{ game.player1.length > 15 ? ".." : "" }}
+                           vs. 
+                          {{ (game.player2.length > 0) ? (game.player2 | limitTo:9) : '?' }}{{ game.player2.length > 15 ? ".." : "" }}
+                        </span>
+                      </td>
+                      <td class="lobby-timestamp">
+                        <span>
+                          {{ game.time | date:'short' }}
+                        </span>
+                      </td>
+                    </tr>
+                  </table>
+                  <div class="lobby-extended-info" ng-show="game.$id === vm.currentGame.$id">
+                    <span ng-show="!game.postGame && !game.gameInProgress">Not yet started!</span>
+                    <span ng-show="game.gameInProgress">In progress...</span>
+                    <span ng-show="game.postGame">{{ game.winner | limitTo:15 }}</span>
+                  </div>
+
+<!--                   <div class="lobby-section">
                     <span class="lobby-info">
                       {{ (game.player1.length > 0) ? game.player1 : '?' }} vs. {{ (game.player2.length > 0) ? game.player2 : '?' }}
                     </span>
@@ -116,7 +158,7 @@
                   </div>
                   <div class="lobby-section">
                     <span class="lobby-info" class="game-time">{{ game.time | date:'short' }}</span>
-                  </div>
+                  </div> -->
                 </div>
               </li>
             </ul>
@@ -158,67 +200,89 @@
           </div>
         </div>
 
-        <!-- - - - - - - - - - - - Controls / Setup - - - - - - - - - - - -->
-        <div class="row">
-          <div class="col-md-6 controls">
-            <h3>Setup</h3>
-            <div class="form-group">
-              <label for="name-input">Please enter your name</label>
-              <input id="name-input"type="text" ng-model="vm.playerName" placeholder="Name...">
-              <div class="team-buttons-container">
-                <button class="teamButton btn btn-default"
-                        ng-class="{ disabled: (vm.currentGame == null) || 
-                                              (vm.playerName.length < 1) ||
-                                              vm.currentGame.gameInProgress ||
-                                              (vm.currentGame.player1.length > 0),
-                                    'picked-team': vm.playerTeam === 'x' }"
-                        ng-click="vm.joinTeam('x')">
-                        Play as X
-                </button>
-                <button class="teamButton btn btn-default" 
-                        ng-class="{ disabled: vm.currentGame.gameInProgress || 
-                                             (vm.playerName.length < 1) ||
-                                             (vm.currentGame == null) ||
-                                             (vm.currentGame.player2.length > 0),
-                                    'picked-team': vm.playerTeam === 'o' }"
-                        ng-click="vm.joinTeam('o')">
-                        Play as O
-                </button>
+        <div class="row" ng-show="!vm.setupComplete">
+          <div class="col-md-12 setup-container">
+            <h3>setup</h3>
+            <form class="form">
+              <div class="form-group">
+                <label for="name-input">Please enter your name</label>
+                <input id="name-input" type="text" maxlength="30" ng-model="vm.playerName" placeholder="Name...">
               </div>
-              <div class="lobby-buttons-container">
-                <button class="resetButton btn btn-default" ng-click="vm.addGame()">New Lobby</button>
-                <button class="startGame btn btn-default" ng-click="vm.startGame()">Start game</button>
+              <div class="form-group">
+                <button class="btn btn-default" ng-show="vm.playerName !== ''" ng-click="vm.setupComplete = true">Ready!</button>
               </div>
-              <button ng-show="vm.playerTeam !== ''" class="leave-team btn btn-default" ng-click="vm.leaveTeam()">Leave team</button>
-            </div>
-          </div>
-
-
-          <!-- - - - - - - - - - - - Game info - - - - - - - - - - - -->
-          <div class="col-md-6 game-status">
-            <h3>Info</h3>
-            <label>Players</label>
-            <div class="player-status-container">
-              <ul>
-                <li><span class="info-x">X:</span>  <span class="info-x-name">{{ vm.currentGame.player1 | limitTo:13 }}</span></li>
-                <li><span class="info-o">O:</span>  <span class="info-o-name">{{ vm.currentGame.player2 | limitTo:13 }}</span></li>
-              </ul>
-            </div>
-            <label>Notifications</label>
-            <div class="info-messages-container">
-              <p ng-show="vm.currentGame.readyToStart">Ready to start!</p>
-              <p ng-show="vm.currentGame.gameInProgress && vm.currentGame.turn">{{vm.currentGame.player1}}'s turn!</p>
-              <p ng-show="vm.currentGame.gameInProgress && !vm.currentGame.turn">{{vm.currentGame.player2}}'s turn!</p>
-            </div>
+              
+            </form>
           </div>
         </div>
 
-        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-        <!-- - - - - - - - - - - - GAME AREA - - - - - - - - - - - -->
-        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-        <div class="row">
-          <div class="col-md-12 game-area-container">
+        <div class="row" ng-show="vm.setupComplete">
+
+          <!-- - - - - - - - - - - - Game info - - - - - - - - - - - -->
+          <div class="col-md-6 game-status">
+
+            <h3>Info</h3>
+
+            <label>Click a side to join!</label>
+            <div class="player-status-container">
+
+
+              <ul class="info-teams">
+
+                <li>
+                  <button class="team-button info-x"
+                    ng-class="{ disabled: (vm.currentGame == null) || 
+                                          (vm.playerName.length < 1) ||
+                                          vm.currentGame.gameInProgress ||
+                                          vm.currentGame.postGame ||
+                                          (vm.currentGame.player1.length > 0),
+                                'picked-team': vm.playerTeam === 'x' }"
+                    ng-click="vm.joinTeam('x')">X: {{ vm.currentGame.player1 | limitTo: 19}}{{ vm.currentGame.player1.length >20 ? "..." : "" }}
+                  </button>
+
+<!--                   <span class="info-x">
+                    X: {{ vm.currentGame.player1 | limitTo: 19}}{{ vm.currentGame.player1.length >20 ? "..." : "" }}
+                  </span> -->
+                </li>
+
+                <li>
+                  <button class="team-button info-o" 
+                    ng-class="{ disabled: vm.currentGame.gameInProgress || 
+                                         (vm.playerName.length < 1) ||
+                                         (vm.currentGame == null) ||
+                                         (vm.currentGame.postGame) ||
+                                         (vm.currentGame.player2.length > 0),
+                                'picked-team': vm.playerTeam === 'o' }"
+                    ng-click="vm.joinTeam('o')">O: {{ vm.currentGame.player2 | limitTo: 19}}{{ vm.currentGame.player1.length >20 ? "..." : "" }}
+                    </button>
+<!--                     <span class="info-o">
+                      O: {{ vm.currentGame.player2 | limitTo: 19}}{{ vm.currentGame.player1.length >20 ? "..." : "" }}
+                    </span> -->
+                </li>
+
+<!--                 <li ng-show="(vm.playerTeam !== '') && (!vm.currentGame.gameInProgress) && (!vm.currentGame.postGame)">
+                  <button ng-show="vm.playerTeam !== ''" class="leave-team btn btn-default" ng-click="vm.leaveTeam()">Leave team</button>
+                </li> -->
+
+              </ul>
+
+
+            </div>
+
+            <label>Notifications</label>
+            <div class="info-messages-container">
+              <p ng-show="vm.currentGame.readyToStart">Ready to start!</p>
+              <button class="startGame btn btn-default" ng-show="vm.currentGame.readyToStart" ng-click="vm.startGame()">Start game</button>
+              <p ng-show="vm.currentGame.gameInProgress && vm.currentGame.turn">{{vm.currentGame.player1 | firstName }}'s turn!</p>
+              <p ng-show="vm.currentGame.gameInProgress && !vm.currentGame.turn">{{vm.currentGame.player2 | firstName }}'s turn!</p>
+              <p ng-show="vm.currentGame.postGame">{{ vm.currentGame.winner }}</p>
+            </div>
+
+          </div>
+
+
+          <div class="col-md-6 game-area-container">
 
             <!-- - - - - - - - - - - - Game board - - - - - - - - - - - -->
             <div class="board-container">
@@ -235,18 +299,11 @@
             </div>
 
           </div>
+
         </div>
 
-        <!-- - - - - - - - - - - - Win Message - - - - - - - - - - - -->
-        <div class="row">
-          <div class="col-md-12">
-            <div class="win-message" ng-show="vm.currentGame.postGame">
-              <p>{{ vm.currentGame.winner }}</p>
-            </div>
+        <div class="clear"></div>
 
-            <div class="clear"></div>
-          </div>
-        </div>
       </div>
     </div>
   </div>

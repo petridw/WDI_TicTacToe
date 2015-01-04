@@ -1,8 +1,16 @@
 angular
   .module("ticTacToeApp", ['firebase'])
-  .controller("GameController", ['$firebase', GameController]);
+  .controller("GameController", ['$firebase', '$filter', GameController])
+  .filter('firstName', function () {
+  return function (input) {
+    if (input) {
+      var splitName = input.split(" ");
+      return splitName[0];
+    }
+  };
+});;
 
-function GameController($firebase) {
+function GameController($firebase, $filter) {
 
   var vm = this;
 
@@ -52,6 +60,7 @@ function GameController($firebase) {
   vm.messageColorStyle = {color: vm.messageColor};
   vm.hideChat = false;
   vm.hideLobbies = false;
+  vm.setupComplete = false;
 
   //------------------------------------------------------------------
   // Functions available to the View
@@ -101,30 +110,39 @@ function GameController($firebase) {
 
     console.log("game in prog? " + vm.currentGame.gameInProgress);
 
-    //can't join a team unless you have a name and game isn't in progress already
-    if ((vm.playerName.length > 0) && (!vm.currentGame.gameInProgress)) {
+    if ((!vm.currentGame.gameInProgress) && (!vm.currentGame.postGame)){
 
-      if ((team === "x") && (vm.currentGame.player1 === "")) {
+      //can't join a team unless you have a name and game isn't in progress already
+      if ((vm.playerName.length > 0) && (!vm.currentGame.gameInProgress)) {
 
-        //if player is switching from team "o" then...
-        if (vm.playerTeam === "o") {
+        if ((team === "x") && (vm.currentGame.player1 === "")) {
+
+          //if player is switching from team "o" then...
+          if (vm.playerTeam === "o") {
+            vm.currentGame.player2 = "";
+          }
+          vm.currentGame.player1 = vm.playerName;
+          vm.playerTeam = "x";
+        } else if ((team === "o") && (vm.currentGame.player2 === "")) {
+
+          //if player is already on team x then they should switch teams
+          if (vm.playerTeam === "x") {
+            vm.currentGame.player1 = "";
+          }
+
+          vm.currentGame.player2 = vm.playerName;
+          vm.playerTeam = "o";
+        } else if ((team ==="x") && (vm.currentGame.player1 === vm.playerName)) {
+          //leave team
+          vm.currentGame.player1 = "";
+        } else if ((team ==="o") && (vm.currentGame.player2 === vm.playerName)) {
+          //leave team
           vm.currentGame.player2 = "";
         }
-        vm.currentGame.player1 = vm.playerName;
-        vm.playerTeam = "x";
-      } else if ((team === "o") && (vm.currentGame.player2 === "")) {
 
-        //if player is already on team x then they should switch teams
-        if (vm.playerTeam === "x") {
-          vm.currentGame.player1 = "";
-        }
-
-        vm.currentGame.player2 = vm.playerName;
-        vm.playerTeam = "o";
+        setGameReadyState();
+        saveCurrentGame();
       }
-
-      setGameReadyState();
-      saveCurrentGame();
     }
 
   }
@@ -178,8 +196,6 @@ function GameController($firebase) {
     } else if (vm.playerName === vm.currentGame.player2) {
       vm.playerTeam = "o";
     }
-
-    vm.playerTeam = "";
 
   }
 
@@ -366,8 +382,8 @@ function GameController($firebase) {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - 
   function endGame(tie) {
     vm.currentGame.winner = tie ? "Cat's game!" : 
-                                  (vm.currentGame.turn ? vm.currentGame.player1 + " wins!" : 
-                                                         vm.currentGame.player2 + " wins!");
+                                  (vm.currentGame.turn ? $filter('firstName')(vm.currentGame.player1) + " wins!" : 
+                                                         $filter('firstName')(vm.currentGame.player2) + " wins!");
     vm.currentGame.gameInProgress = false;
     vm.currentGame.postGame = true;
   }
